@@ -1,0 +1,49 @@
+Create Databsae loan_db;
+
+Use loan_db;
+
+
+Create TABLE employee_master(
+    employee_id VARCHAR(6) NOT NULL,
+    employee_name VARCHAR(20),
+    designation VARCHAR(25),
+    department VARCHAR(25),
+    gender CHAR(1),
+    date_of_birth DATE,
+    date_of_joining DATE
+);
+
+
+Create TABLE employee_issue_details(
+    issue_id VARCHAR(6) NOT NULL,
+    employee_id VARCHAR(6),
+    item_id VARCHAR(6),
+    issue_date DATE,
+    return_date DATE
+);
+
+
+
+
+Create TABLE item_master(
+    item_id VARCHAR(6) NOT NULL,
+    item_description VARCHAR(25),
+    issue_status CHAR(1),
+    item_make VARCHAR(25),
+    item_category VARCHAR(20),
+    item_valuation INT(6)
+);
+
+
+CREATE TABLE loan_card_master(
+    loan_id VARCHAR(6) NOT NULL,
+    loan_type VARCHAR(15),
+    duration_in_years INT(2)
+);
+
+
+Create TABLE employee_card_details(
+    employee_id VARCHAR(6),
+    loan_id VARCHAR(6),
+    card_issue_date DATE
+);
