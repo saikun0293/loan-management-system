@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: localhost    Database: loan_db
+-- Host: localhost    Database: Lamadb
 -- ------------------------------------------------------
 -- Server version	8.1.0
 
