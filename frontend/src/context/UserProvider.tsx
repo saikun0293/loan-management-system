@@ -3,12 +3,14 @@ import {
   SetStateAction,
   createContext,
   useContext,
-  useState
+  useState,
 } from "react"
+
+export type Role = "ANONYMOUS" | "USER" | "ADMIN"
 
 export interface User {
   user_id: string
-  role: "ANONYMOUS" | "USER" | "ADMIN"
+  role: Role
   emp_name: string
   dob: string
   gender: string
@@ -23,12 +25,12 @@ const initialUser: User = {
   dob: "",
   gender: "",
   designation: "",
-  dept: ""
+  dept: "",
 }
 
 const UserContext = createContext({
   user: initialUser,
-  setUser: (() => {}) as Dispatch<SetStateAction<User>>
+  setUser: (() => {}) as Dispatch<SetStateAction<User>>,
 })
 
 export const useUser = () => useContext(UserContext)

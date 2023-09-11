@@ -1,22 +1,23 @@
-import { FC } from "react"
 import { Navigate } from "react-router-dom"
-import { useUser } from "../context/UserProvider"
+import { Role, useUser } from "../context/UserProvider"
 
 interface PrivateRouteProps {
-  component: FC
-  props?: any
+  component: React.ComponentType
+  roles: Array<Role>
 }
 
-const PrivateRoute: FC<PrivateRouteProps> = ({
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
-  props
+  roles,
 }) => {
   const {
-    user: { role }
+    user: { role },
   } = useUser()
 
-  if (role === "ANONYMOUS") return <Navigate to={"/user/login"} />
-  else return <Component {...props} />
+  const isAuthorized = role && roles.includes(role)
+
+  if (isAuthorized) return <Component />
+  else return <Navigate to="/" />
 }
 
 export default PrivateRoute

@@ -1,5 +1,6 @@
 import { Button, Center, Container, Group, Text } from "@mantine/core"
 import { FC } from "react"
+import { Link } from "react-router-dom"
 
 const Home: FC = () => {
   return (
@@ -8,8 +9,9 @@ const Home: FC = () => {
         <Text
           component="h1"
           variant="gradient"
-          gradient={{ from: "blue", to: "cyan" }}
-          inherit
+          gradient={{ from: "blue", to: "purple" }}
+          fz={50}
+          fw={700}
         >
           Loan Management System
         </Text>
@@ -18,8 +20,12 @@ const Home: FC = () => {
           furniture to crockery! on our Loan Management system platform!
         </Text>
         <Group>
-          <Button>Login as User</Button>
-          <Button>Login as Admin</Button>
+          <Link to="/login/user">
+            <Button>Login as User</Button>
+          </Link>
+          <Link to="/login/admin">
+            <Button>Login as Admin</Button>
+          </Link>
         </Group>
       </Container>
     </Center>
