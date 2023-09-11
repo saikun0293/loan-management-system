@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import com.example.demo.repository.AdminRepository;
 import com.example.demo.service.AdminService;
 
 @RestController
+@CrossOrigin("http://localhost:3000s")
 public class AdminController {
 	@Autowired
 	private AdminRepository adminRepo;
@@ -27,7 +29,13 @@ public class AdminController {
 	
 	@PostMapping("/adminLogin")
 	public String validateAdminLogin(@RequestBody Admin admin) {
+		boolean ifExists=adminRepo.existsById(admin.getAdminId());
+		if(!ifExists) {
+			return "no such admin";
+
+		}
 		Admin tempAdmin = adminRepo.getReferenceById(admin.getAdminId());
+		
 		return tempAdmin.getPassword().equals(admin.getPassword()) ? "pass" : "fail";
 	}
 
