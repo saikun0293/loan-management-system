@@ -6,9 +6,11 @@ import ErrorPage from "./components/ErrorPage"
 import PrivateRoute from "./components/PrivateRoute"
 import "./index.css"
 import reportWebVitals from "./reportWebVitals"
+
+// common routes
 import Login from "./routes/Login"
-import Dashboard, { NavLink } from "./routes/user/Dashboard"
-import Home from "./routes/user/Home"
+import Dashboard, { NavLink } from "./routes/Dashboard"
+import Home from "./routes/Home"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
@@ -16,36 +18,36 @@ const userLinks: NavLink[] = [
   {
     displayName: "View Loans",
     name: "viewLoans",
-    to: "/user/loans/view",
+    to: "/user/loans/view"
   },
   {
     displayName: "Apply for a loan",
     name: "applyLoans",
-    to: "/user/loans/apply",
+    to: "/user/loans/apply"
   },
   {
     displayName: "Items Purchased",
     name: "itemsPurchased",
-    to: "/user/items",
-  },
+    to: "/user/items"
+  }
 ]
 
 const adminLinks: NavLink[] = [
   {
-    displayName: "View Loans",
-    name: "viewLoans",
-    to: "/user/loans/view",
+    displayName: "Customer Data Management",
+    name: "manageUsers",
+    to: "/admin/manageUsers"
   },
   {
-    displayName: "Apply for a loan",
-    name: "applyLoans",
-    to: "/user/loans/apply",
+    displayName: "Loan Card Management",
+    name: "manageLoanCards",
+    to: "/user/manageLoanCards"
   },
   {
-    displayName: "Items Purchased",
-    name: "itemsPurchased",
-    to: "/user/items",
-  },
+    displayName: "Items Master Data",
+    name: "manageItems",
+    to: "/admin/manageItems"
+  }
 ]
 
 const router = createBrowserRouter([
@@ -55,11 +57,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Home />
       },
       {
         path: "login/:role",
-        element: <Login />,
+        element: <Login />
       },
       {
         path: "user",
@@ -67,25 +69,49 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Dashboard name="User Dashboard" navLinks={userLinks} />,
+            element: <Dashboard name="User Dashboard" navLinks={userLinks} />
           },
           {
             path: "loans/view",
-            element: <div>View Loans</div>,
+            element: <div>View Loans</div>
           },
           {
             path: "loans/apply",
-            element: <div>Apply for Loans</div>,
+            element: <div>Apply for Loans</div>
           },
           {
             path: "items",
-            element: <div>Items Purchased</div>,
-          },
-        ],
+            element: <div>Items Purchased</div>
+          }
+        ]
       },
+      {
+        path: "admin",
+        element: (
+          <PrivateRoute component={() => <Outlet />} roles={["ADMIN"]} />
+        ),
+        children: [
+          {
+            index: true,
+            element: <Dashboard name="Admin Dashboard" navLinks={adminLinks} />
+          },
+          {
+            path: "/manageUsers",
+            element: <div>Customer Master Data Details</div>
+          },
+          {
+            path: "/manageLoanCards",
+            element: <div>Loan Cards Master Data Details</div>
+          },
+          {
+            path: "/manageItems",
+            element: <div>Item Master Data details</div>
+          }
+        ]
+      }
     ],
-    errorElement: <ErrorPage />,
-  },
+    errorElement: <ErrorPage />
+  }
 ])
 
 root.render(
