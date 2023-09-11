@@ -23,5 +23,6 @@ public class AdminController {
 	public Admin addAdmin(@RequestBody Admin admin) {
 		return (Admin) adminRepo.save(admin) ;
 	}
+	//for push
 
 }
