@@ -4,11 +4,13 @@ import * as Yup from "yup"
 
 type Gender = "Male" | "Female" | "Prefer not to say"
 
+// todo : generate user_id
 interface User {
   user_id: string
+  name: string
   designation: string
-  dob: string
-  doj: string
+  dob: Date
+  doj: Date
   gender: Gender
   dept: string
   password: string
@@ -20,12 +22,13 @@ const AddUser: React.FC = () => {
   const formik = useFormik<User>({
     initialValues: {
       user_id: "",
+      name: "",
       designation: "",
-      dob: "",
-      doj: "",
+      dob: new Date(),
+      doj: new Date(),
       gender: "Male",
       dept: "",
-      password: ""
+      password: "",
     },
     validationSchema: Yup.object({
       user_id: Yup.string()
@@ -42,11 +45,11 @@ const AddUser: React.FC = () => {
           /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
           "Password must contain at least 8 characters, one uppercase, one number and one special case character"
         )
-        .required("Please enter your password")
+        .required("Please enter your password"),
     }),
     onSubmit: (values) => {
       console.log("Created user", values)
-    }
+    },
   })
 
   console.log(formik)

@@ -1,10 +1,12 @@
 import { Button, PasswordInput, Stack, Text, TextInput } from "@mantine/core"
 import { useFormik } from "formik"
 import { FC } from "react"
-import { Navigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import * as Yup from "yup"
 import { loginUser } from "../api/user"
-import { useUser } from "../context/UserProvider"
+import { User, useUser } from "../context/UserProvider"
+import { loginAdmin } from "../api/admin"
+import { isAxiosError } from "axios"
 
 export interface Credentials {
   username: string
@@ -14,25 +16,35 @@ export interface Credentials {
 const Login: FC = () => {
   const { role } = useParams()
   const { user, setUser } = useUser()
+  const navigate = useNavigate()
 
   const formik = useFormik<Credentials>({
     initialValues: {
       username: "",
-      password: ""
+      password: "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("*Required"),
-      password: Yup.string().required("*Required")
+      password: Yup.string().required("*Required"),
     }),
     onSubmit: async (values) => {
       try {
-        if (role?.toUpperCase() === "USER") {
-          setUser(await loginUser(values))
-        }
+        const loginType = role ? role.toUpperCase() : "ANONYMOUS"
+        let userData = {}
+        if (loginType === "USER") userData = await loginUser(values)
+        else if (loginType === "ADMIN") userData = await loginAdmin(values)
+        setUser((prev) => ({ ...prev, ...userData }))
       } catch (e) {
-        console.log("Error in login", e)
+        if (isAxiosError(e)) {
+          window.alert(
+            e.response
+              ? e.response.data
+              : "Unable to login. Contact administrator"
+          )
+        }
+        navigate("/")
       }
-    }
+    },
   })
 
   if (!user.role) return <Navigate to="/" />
