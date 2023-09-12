@@ -1,11 +1,15 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,15 +55,39 @@ public class AdminController {
 	}
 	
 	@PostMapping("/addEmployee")
-	public String addEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<String> addEmployee(@RequestBody Employee employee) {
 		boolean ifExists=empRepo.existsById(employee.getEmployeeId());
 		if(ifExists)
-		{return "Employee with this id already exists!";
+		{		return new ResponseEntity<>("Employee with this id already exists!",HttpStatus.BAD_REQUEST);
+
 		}
 		else {
 			empRepo.save(employee);
-			return "Successfully created employee";
+			return new ResponseEntity<>("Successfully added employee",HttpStatus.OK);
 		}
 	}
-
+	
+	@GetMapping("/showAllEmployees")
+	public List<Employee> showAllEmployees(){
+		return empRepo.findAll();
+	}
+	
+	@PostMapping("/updateEmployee")
+	public ResponseEntity<String> updateEmployee(@RequestBody Employee employee) {
+			empRepo.save(employee);
+			return new ResponseEntity<>("Successfully updated employee",HttpStatus.OK);
+		}
+	
+		/*
+		 * @DeleteMapping("/deleteEmployee/{id}") public ResponseEntity<String>
+		 * deleteEmployee(@RequestBody Employee employee, @PathVariable("id") int id) {
+		 * boolean ifExists=empRepo.existsById(employee.getEmployeeId()); if(!ifExists)
+		 * { return new ResponseEntity<>("No such Employee",HttpStatus.BAD_REQUEST); }
+		 * else{ empRepo.deleteById(id+""); return new
+		 * ResponseEntity<>("Successfully deleted employee",HttpStatus.OK); }
+		 * 
+		 * }
+		 */
 }
+
+
