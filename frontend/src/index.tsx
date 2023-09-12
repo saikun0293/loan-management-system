@@ -19,36 +19,36 @@ const userLinks: NavLink[] = [
   {
     displayName: "View Loans",
     name: "viewLoans",
-    to: "/user/loans/view",
+    to: "/user/loans/view"
   },
   {
     displayName: "Apply for a loan",
     name: "applyLoans",
-    to: "/user/loans/apply",
+    to: "/user/loans/apply"
   },
   {
     displayName: "Items Purchased",
     name: "itemsPurchased",
-    to: "/user/items",
-  },
+    to: "/user/items"
+  }
 ]
 
 const adminLinks: NavLink[] = [
   {
     displayName: "Customer Data Management",
     name: "manageUsers",
-    to: "/admin/manageUsers",
+    to: "/admin/manageUsers"
   },
   {
     displayName: "Loan Card Management",
     name: "manageLoanCards",
-    to: "/admin/manageLoanCards",
+    to: "/admin/manageLoanCards"
   },
   {
     displayName: "Items Master Data",
     name: "manageItems",
-    to: "/admin/manageItems",
-  },
+    to: "/admin/manageItems"
+  }
 ]
 
 const router = createBrowserRouter([
@@ -58,61 +58,61 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Home />
       },
       {
         path: "login/:role",
-        element: <Login />,
+        element: <Login />
       },
       {
         path: "user",
-        element: <PrivateRoute component={() => <Outlet />} roles={["USER"]} />,
+        element: <PrivateRoute component={() => <Outlet />} roles={["user"]} />,
         children: [
           {
             index: true,
-            element: <Dashboard name="User Dashboard" navLinks={userLinks} />,
+            element: <Dashboard name="User Dashboard" navLinks={userLinks} />
           },
           {
             path: "loans/view",
-            element: <div>View Loans</div>,
+            element: <div>View Loans</div>
           },
           {
             path: "loans/apply",
-            element: <div>Apply for Loans</div>,
+            element: <div>Apply for Loans</div>
           },
           {
             path: "items",
-            element: <div>Items Purchased</div>,
-          },
-        ],
+            element: <div>Items Purchased</div>
+          }
+        ]
       },
       {
         path: "admin",
         element: (
-          <PrivateRoute component={() => <Outlet />} roles={["ADMIN"]} />
+          <PrivateRoute component={() => <Outlet />} roles={["admin"]} />
         ),
         children: [
           {
             index: true,
-            element: <Dashboard name="Admin Dashboard" navLinks={adminLinks} />,
+            element: <Dashboard name="Admin Dashboard" navLinks={adminLinks} />
           },
           {
             path: "manageUsers",
-            element: <ManageUser />,
+            element: <ManageUser />
           },
           {
             path: "manageLoanCards",
-            element: <div>Loan Cards Master Data Details</div>,
+            element: <div>Loan Cards Master Data Details</div>
           },
           {
             path: "manageItems",
-            element: <div>Item Master Data details</div>,
-          },
-        ],
-      },
+            element: <div>Item Master Data details</div>
+          }
+        ]
+      }
     ],
-    errorElement: <ErrorPage />,
-  },
+    errorElement: <ErrorPage />
+  }
 ])
 
 root.render(

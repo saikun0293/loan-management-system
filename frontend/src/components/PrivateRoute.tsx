@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom"
+import { useAuth } from "../context/AuthProvider"
 import { Role } from "../types"
 
 interface PrivateRouteProps {
@@ -8,11 +9,13 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
-  roles,
+  roles
 }) => {
-  const isAuthorized = role && roles.includes(role)
+  const {
+    auth: { isLoggedIn, role }
+  } = useAuth()
 
-  if (isAuthorized) return <Component />
+  if (isLoggedIn && roles.includes(role)) return <Component />
   else return <Navigate to="/" />
 }
 
