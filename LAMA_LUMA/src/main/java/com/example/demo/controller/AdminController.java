@@ -16,7 +16,7 @@ public class AdminController {
 	@Autowired
 	private AdminRepository adminRepo;
 	@Autowired
-	private EmployeeRepository employeeRepo;
+	private EmployeeRepository empRepo;
 	
 	@GetMapping("/")
 	public String sayHello() {
@@ -27,19 +27,27 @@ public class AdminController {
 		return (Admin) adminRepo.save(admin) ;
 	}
 
-	@PostMapping("/addEmployee")
-	public Employee addEmployee(@RequestBody Employee employee) {
-		return (Employee) employeeRepo.save(employee) ;
+	@PostMapping("/addCustomer")
+	public Employee addCustomer(@RequestBody Employee employee) {
+		boolean ifExists=empRepo.existsById(employee.getEmployeeId());
+		if(ifExists)
+		{
+			Employee tempEmp=empRepo.getReferenceById(employee.getEmployeeId());
+			return tempEmp;
+		}
+		else {
+			return empRepo.save(employee);
+		}
+	}
 	}
 
-	@PostMapping("/login")
-	public String validateLogin(@RequestBody Admin admin , @RequestBody Employee employee) {
-		Admin tempAdmin=adminRepo.getReferenceById(admin.getAdminId());
-		Employee tempEmployee=employeeRepo.getReferenceById(employee.getEmployeeId());
-		if(tempAdmin.getPassword().equals(admin.getPassword()) || tempEmployee.getPassword().equals(employee.getPassword()))
-			return "Successful Login";
-		else
-			return "Failed to Log In! Please Try Again";
-	}
+	// @PostMapping("/login")
+	// public String validateLogin(@RequestBody Admin admin , @RequestBody Employee employee) {
+	// 	Admin tempAdmin=adminRepo.getReferenceById(admin.getAdminId());
+	// 	Employee tempEmployee=employeeRepo.getReferenceById(employee.getEmployeeId());
+	// 	if(tempAdmin.getPassword().equals(admin.getPassword()) || tempEmployee.getPassword().equals(employee.getPassword()))
+	// 		return "Successful Login";
+	// 	else
+	// 		return "Failed to Log In! Please Try Again";
+	// }
 
-}

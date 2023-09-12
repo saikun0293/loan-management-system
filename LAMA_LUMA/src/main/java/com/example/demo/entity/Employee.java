@@ -2,28 +2,34 @@ package com.example.demo.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="employee_details")
 public class Employee {
 
 	@Id
-	private int employeeId;
+	@Column(name="emp_id")
+	private String employeeId;
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Column(name="name")
 	private String name;
+	@Column(name="password")
 	private String password;
-	public Employee(int employeeId, String name, String password) {
+	public Employee(String employeeId, String name, String password) {
 		super();
 		this.employeeId = employeeId;
 		this.name = name;
 		this.password = password;
 	}
-	public int getEmployeeId() {
+	public String getEmployeeId() {
 		return employeeId;
 	}
-	public void setEmployeeId(int employeeId) {
+	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
 	public String getName() {
