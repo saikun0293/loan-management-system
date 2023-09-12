@@ -18,6 +18,9 @@ const Login: FC = () => {
   const { user, setUser } = useUser()
   const navigate = useNavigate()
 
+  // TODO: Check if auth token is expired or not based on USER or ADMIN
+  // If not expired - go to respective pages
+
   const formik = useFormik<Credentials>({
     initialValues: {
       username: "",
@@ -31,6 +34,9 @@ const Login: FC = () => {
       try {
         const loginType = role ? role.toUpperCase() : "ANONYMOUS"
         let userData = {}
+
+        // TODO: store tokens in localStorage
+
         if (loginType === "USER") userData = await loginUser(values)
         else if (loginType === "ADMIN") userData = await loginAdmin(values)
         setUser((prev) => ({ ...prev, ...userData }))

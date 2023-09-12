@@ -22,3 +22,15 @@ export const loginAdmin = async (creds: Credentials): Promise<User> => {
 
   return userDetails
 }
+
+export const getDesignations = async (): Promise<string[]> => {
+  const designations = ["Manager", "Executive", "Sr.Executive", "Clerk"]
+  // const res = api.get("/designations")
+  return designations
+}
+
+export const getDepartments = async (): Promise<string[]> => {
+  const departments = ["Finance", "HR", "Sales"]
+  // const res = api.get("/designations")
+  return departments
+}

@@ -11,6 +11,7 @@ import reportWebVitals from "./reportWebVitals"
 import Login from "./routes/Login"
 import Dashboard, { NavLink } from "./routes/Dashboard"
 import Home from "./routes/Home"
+import ManageUser from "./routes/admin/ManageUser"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
@@ -97,7 +98,7 @@ const router = createBrowserRouter([
           },
           {
             path: "manageUsers",
-            element: <div>Customer Master Data Details</div>,
+            element: <ManageUser />,
           },
           {
             path: "manageLoanCards",
