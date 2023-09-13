@@ -1,18 +1,19 @@
 import { Center, Container, MantineProvider, Text } from "@mantine/core"
 import { Outlet } from "react-router-dom"
-import UserProvider from "./context/UserProvider"
+import { Notifications } from "@mantine/notifications"
+import AuthProvider from "./context/AuthProvider"
 
 const App = () => {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <UserProvider>
+      <AuthProvider>
+        <Notifications position="top-right" autoClose={2000} />
         <Text
           component="h1"
           variant="gradient"
           gradient={{ from: "blue", to: "purple" }}
-          fz={50}
+          fz={45}
           fw={700}
-          h="10vh"
           align="center"
         >
           Loan Management System
@@ -22,7 +23,7 @@ const App = () => {
             <Outlet />
           </Container>
         </Center>
-      </UserProvider>
+      </AuthProvider>
     </MantineProvider>
   )
 }
