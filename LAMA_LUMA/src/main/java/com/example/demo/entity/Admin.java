@@ -1,29 +1,35 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table
 public class Admin {
 
 	@Id
-	private int adminId;
+	@Column
+	private String adminId;
 	public Admin() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Column
 	private String name;
+	@Column
 	private String password;
-	public Admin(int adminId, String name, String password) {
+	public Admin(String adminId, String name, String password) {
 		super();
 		this.adminId = adminId;
 		this.name = name;
 		this.password = password;
 	}
-	public int getAdminId() {
+	public String getAdminId() {
 		return adminId;
 	}
-	public void setAdminId(int adminId) {
+	public void setAdminId(String adminId) {
 		this.adminId = adminId;
 	}
 	public String getName() {
