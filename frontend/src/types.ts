@@ -12,10 +12,10 @@ export interface GlobalAuthState {
 }
 
 export interface User {
-  userId: string
+  employeeId: string
   name: string
-  dob: string
-  doj: string
+  dob: Date
+  doj: Date
   gender: string
   designation: string
   dept: string
