@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Employee;
+import com.example.demo.entity.LoanCards;
 import com.example.demo.exception.NoDataFoundException;
 import com.example.demo.exception.RecordAlreadyExistsException;
 import com.example.demo.exception.ResourceDoesNotExists;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AdminEmployeeService;
+import com.example.demo.service.AdminLoanService;
 import com.example.demo.service.AdminLoginService;
 
 @RestController
@@ -35,6 +37,10 @@ public class AdminController {
 	
 	@Autowired
 	AdminEmployeeService adminservice;
+	
+	@Autowired
+	AdminLoanService adminloan;
+	
 	
 	@GetMapping("/")
 	public String sayHello() {
@@ -72,5 +78,31 @@ public class AdminController {
 		System.out.println(admin.getAdminId());
 		return loginService.login(admin);
 	}
+	
+	
+	@PostMapping("/createLoanCard")
+	public ResponseEntity<String> createLoanCard(@RequestBody LoanCards loan) {
+		return adminloan.createLoanCard(loan);
+		
+	}
+	
+	@PostMapping("/updateLoanCard")
+	public ResponseEntity<String> updateLoanCard(@RequestBody LoanCards loan) {
+		return adminloan.updateLoanCard(loan);
+		
+	}
+	
+	@GetMapping("/getLoanCard/{id}")
+	public ResponseEntity<LoanCards> getLoanCard(@PathVariable("id") String loan_id) {
+		return adminloan.getLoanCard(loan_id);
+		
+	}
+	
+	@DeleteMapping("/deleteLoanCard/{id}")
+	public ResponseEntity<String> deleteLoanCard(@PathVariable("id") String loan_id) {
+		return adminloan.deleteLoanCard(loan_id);
+		
+	}
+	
 
 }
