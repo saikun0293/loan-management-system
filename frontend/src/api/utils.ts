@@ -17,8 +17,8 @@ export const isCurrentRole = (token: string, role: Role) => {
 }
 
 // FORM UTILS
-export const generateUserId = (length: number) => {
-  let uid = "K"
+export const generateId = (prefix: string, length: number) => {
+  let uid = prefix
   for (let i = 1; i < length; i++)
     uid += Math.floor(Math.random() * 10).toString()
   return uid

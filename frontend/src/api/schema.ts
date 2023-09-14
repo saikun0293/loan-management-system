@@ -6,6 +6,13 @@ export const loginSchema = Yup.object({
   password: Yup.string().required("*Required"),
 })
 
+export const loanFormSchema = Yup.object({
+  loanType: Yup.string().required("Loan type cannot be empty"),
+  duration: Yup.number()
+    .min(1, "Duration cannot be lesser than 1")
+    .required("Duration field cannot be empty"),
+})
+
 export const userFormSchema = Yup.object({
   name: Yup.string()
     .matches(/^[a-zA-Z ]+$/, "Name can only contain alphabets")

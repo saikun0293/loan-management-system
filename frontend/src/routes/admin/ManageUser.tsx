@@ -10,12 +10,12 @@ import {
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
-import { generateUserId } from "../../api/utils"
+import { generateId } from "../../api/utils"
 import UserForm from "../../components/UserForm"
 import { User } from "../../types"
 
 const initialUserState: User = {
-  employeeId: generateUserId(7),
+  employeeId: generateId("K", 7),
   name: "",
   designation: "",
   dob: new Date(),
@@ -136,7 +136,7 @@ const ManageUser: React.FC = () => {
       <Tabs.Panel value="manageUsers">
         <Container>
           <Flex justify="space-between" align="center">
-            <Text component="h2">Manage users table here</Text>
+            <Text component="h2">Employees Registered</Text>
             <Button variant="light" onClick={fetchAllUsers}>
               Refresh
             </Button>

@@ -2,7 +2,7 @@ import { Button, Container, Grid, Select, Text, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, yupResolver } from "@mantine/form"
 import { userFormSchema } from "../api/schema"
-import { generateUserId } from "../api/utils"
+import { generateId } from "../api/utils"
 import { User } from "../types"
 
 interface UserFormProps {
@@ -31,7 +31,10 @@ const UserForm: React.FC<UserFormProps> = ({
       <form
         onSubmit={form.onSubmit((user) => {
           onSubmit(user)
-          form.setValues({ ...initialUserState, employeeId: generateUserId(7) })
+          form.setValues({
+            ...initialUserState,
+            employeeId: generateId("K", 7),
+          })
         })}
       >
         <Grid>

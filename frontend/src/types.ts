@@ -25,6 +25,21 @@ export interface User {
   password: string
 }
 
+export interface Loan {
+  loanId: string
+  loanType: string
+  duration: number
+}
+
+export interface Item {
+  itemId: string
+  category: string
+  name: string
+  value: number
+  issueStatus: boolean
+  make: string
+}
+
 // api responses
 export interface AuthResponseData {
   authToken: string
