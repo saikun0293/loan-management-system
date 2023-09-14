@@ -1,28 +1,29 @@
-import { GlobalAuthState } from "../types"
 import {
+  Dispatch,
+  SetStateAction,
   createContext,
   useContext,
   useState,
-  Dispatch,
-  SetStateAction
 } from "react"
+import { GlobalAuthState } from "../types"
 
-const initialState: GlobalAuthState = {
+export const initialAuthState: GlobalAuthState = {
   authToken: "",
+  config: {},
   // TODO: Change later
   isLoggedIn: true,
-  role: "admin"
+  role: "admin",
 }
 
 const AuthContext = createContext({
-  auth: initialState,
-  setAuth: (() => {}) as Dispatch<SetStateAction<GlobalAuthState>>
+  auth: initialAuthState,
+  setAuth: (() => {}) as Dispatch<SetStateAction<GlobalAuthState>>,
 })
 
 export const useAuth = () => useContext(AuthContext)
 
 const AuthProvider = (props: any) => {
-  const [auth, setAuth] = useState<GlobalAuthState>(initialState)
+  const [auth, setAuth] = useState<GlobalAuthState>(initialAuthState)
 
   return <AuthContext.Provider {...props} value={{ auth, setAuth }} />
 }

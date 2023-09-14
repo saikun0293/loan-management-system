@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from "axios"
+
 export type Role = "user" | "admin" | "anonymous"
 
 export interface Credentials {
@@ -9,6 +11,7 @@ export interface GlobalAuthState {
   authToken: string
   role: Role
   isLoggedIn: boolean
+  config: AxiosRequestConfig
 }
 
 export interface User {

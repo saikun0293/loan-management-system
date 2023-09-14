@@ -4,36 +4,17 @@ import {
   PasswordInput,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core"
+import { useForm, yupResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
-import { isAxiosError } from "axios"
 import { FC, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import * as Yup from "yup"
-import { AuthResponseData, Credentials, Role } from "../types"
 import api from "../api/axios"
-import { useAuth } from "../context/AuthProvider"
-import { useForm, yupResolver } from "@mantine/form"
-
-const decodeToken = (token: string) => JSON.parse(atob(token.split(".")[1]))
-
-const isTokenExpired = (token: string) => {
-  const exp = decodeToken(token).exp
-  // getTime() returns value in ms
-  const present = Math.floor(new Date().getTime() / 1000)
-  return present >= exp
-}
-
-const isCurrentRole = (token: string, role: Role) => {
-  const roleFromToken = decodeToken(token).role
-  return role === roleFromToken
-}
-
-const loginSchema = Yup.object({
-  username: Yup.string().required("*Required"),
-  password: Yup.string().required("*Required")
-})
+import { loginSchema } from "../api/schema"
+import { decodeToken, isCurrentRole, isTokenExpired } from "../api/utils"
+import { initialAuthState, useAuth } from "../context/AuthProvider"
+import { AuthResponseData, Credentials, Role } from "../types"
 
 const Login: FC = () => {
   const { role } = useParams<{ role: Role }>()
@@ -47,7 +28,7 @@ const Login: FC = () => {
       notifications.show({
         title: "Invalid role",
         message:
-          "Role is not defined (user or admin only), perhaps you have entered the wrong link"
+          "Role is not defined (user or admin only), perhaps you have entered the wrong link",
       })
       navigate("/")
     }
@@ -63,14 +44,18 @@ const Login: FC = () => {
       setAuth({
         isLoggedIn: true,
         role: decodeToken(currToken).role,
-        authToken: currToken
+        authToken: currToken,
+        config: {
+          headers: {
+            Authorization: `Bearer ${currToken}`,
+          },
+        },
       })
 
       notifications.show({
         title: "Welcome User!",
-        message: "Looks like you are already logged in, yay!"
+        message: "Looks like you are already logged in, yay!",
       })
-
       navigate(`/${role}`)
     }
   }, [navigate, role, setAuth])
@@ -86,31 +71,23 @@ const Login: FC = () => {
       setAuth({
         isLoggedIn: true,
         role: decodeToken(newToken).role,
-        authToken: newToken
+        authToken: newToken,
+        config: {
+          headers: {
+            Authorization: `Bearer ${newToken}`,
+          },
+        },
       })
 
       // Redirect to dashboard page on successful login
       notifications.show({
         title: "Welcome User!",
-        message: "You have logged in successfully!"
+        message: "You have logged in successfully!",
       })
       navigate(`/${role}`)
     } catch (e) {
-      if (isAxiosError(e)) {
-        notifications.show({
-          title: "Unable to login",
-          message: e.response
-            ? e.response.data
-            : "There seems to be an unknown issue. Contact administrator"
-        })
-      }
-
       // if error set back to initial state and revert back to home page
-      setAuth({
-        authToken: "",
-        isLoggedIn: false,
-        role: "anonymous"
-      })
+      setAuth(initialAuthState)
       navigate("/")
     }
   }
@@ -118,11 +95,11 @@ const Login: FC = () => {
   const form = useForm<Credentials>({
     initialValues: {
       username: "",
-      password: ""
+      password: "",
     },
     validate: yupResolver(loginSchema),
     validateInputOnBlur: true,
-    validateInputOnChange: true
+    validateInputOnChange: true,
   })
 
   return (
