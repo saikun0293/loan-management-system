@@ -7,12 +7,15 @@ import PrivateRoute from "./components/PrivateRoute"
 import "./index.css"
 import reportWebVitals from "./reportWebVitals"
 
+// admin dashboard routes
+import ManageItem from "./routes/admin/ManageItem"
+import ManageLoan from "./routes/admin/ManageLoan"
+import ManageUser from "./routes/admin/ManageUser"
+
 // common routes
-import Login from "./routes/Login"
 import Dashboard, { NavLink } from "./routes/Dashboard"
 import Home from "./routes/Home"
-import ManageUser from "./routes/admin/ManageUser"
-import ManageLoan from "./routes/admin/ManageLoan"
+import Login from "./routes/Login"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
@@ -107,7 +110,7 @@ const router = createBrowserRouter([
           },
           {
             path: "manageItems",
-            element: <div>Item Master Data details</div>,
+            element: <ManageItem />,
           },
         ],
       },

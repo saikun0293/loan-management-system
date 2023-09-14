@@ -13,6 +13,14 @@ export const loanFormSchema = Yup.object({
     .required("Duration field cannot be empty"),
 })
 
+export const itemFormSchema = Yup.object({
+  category: Yup.string().required("Category field cannot be empty"),
+  name: Yup.string().required("Item description cannot be be empty"),
+  value: Yup.number().min(1, "Item can't be for free"),
+  issueStatus: Yup.boolean(),
+  make: Yup.string().required("Item make cannot be empty"),
+})
+
 export const userFormSchema = Yup.object({
   name: Yup.string()
     .matches(/^[a-zA-Z ]+$/, "Name can only contain alphabets")
