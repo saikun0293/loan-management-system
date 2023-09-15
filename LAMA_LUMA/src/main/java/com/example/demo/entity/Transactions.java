@@ -30,8 +30,12 @@ public class Transactions {
 	private String itemId;
 	
 	@Column
-	@NotBlank
+	//@NotBlank
 	private String loanId;
+	
+	@Column
+	@NotBlank
+	private Date issueDate;
 	
 	public String getTransactionId() {
 		return transactionId;
@@ -73,7 +77,5 @@ public class Transactions {
 		this.issueDate = issueDate;
 	}
 
-	@Column
-	@NotBlank
-	private Date issueDate;
+	
 }

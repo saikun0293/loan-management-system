@@ -4,12 +4,17 @@ import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.validation.constraints.NotBlank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 
 @Entity
 
