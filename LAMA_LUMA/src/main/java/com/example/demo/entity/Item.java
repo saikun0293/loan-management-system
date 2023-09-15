@@ -1,11 +1,14 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 public class Item {
 	
