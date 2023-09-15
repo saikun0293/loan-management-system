@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +16,7 @@ public class Item {
 	
 	@Id
 	@Column(unique=true)
+	@NotBlank
 	public String itemId;
 	@Column
 	public String itemDesc;
