@@ -34,7 +34,7 @@ public class Transactions {
 	private String loanId;
 	
 	@Column
-	@NotBlank
+	//@NotBlank
 	private Date issueDate;
 	
 	public String getTransactionId() {

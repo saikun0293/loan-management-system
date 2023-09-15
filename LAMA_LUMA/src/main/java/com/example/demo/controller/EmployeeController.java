@@ -29,7 +29,7 @@ public class EmployeeController {
 	EmployeeService empService;
 	
 	@PostMapping("/employee/applyForLoan")
-	public ResponseEntity<String> applyForLoan(@RequestParam String empId, @RequestParam String itemId){
+	public ResponseEntity<String> applyForLoan(@RequestParam(name="empId") String empId, @RequestParam(name="itemId") String itemId){
 		return empService.applyForLoan(empId, itemId);
 		
 	}
