@@ -1,15 +1,26 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
+@Entity
 public class Item {
 	
 	@Id
+	@Column(unique=true)
 	public String itemId;
+	@Column
 	public String itemDesc;
+	@Column
 	public char itemStatus;
+	@Column
 	public String itemMake;
+	@Column
 	public String itemCategory;
+	@Column
 	public int itemValue;
 
 	

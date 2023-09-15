@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Employee;
+import com.example.demo.entity.Item;
 import com.example.demo.entity.LoanCards;
 import com.example.demo.exception.NoDataFoundException;
 import com.example.demo.exception.RecordAlreadyExistsException;
@@ -22,6 +23,7 @@ import com.example.demo.exception.ResourceDoesNotExists;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AdminEmployeeService;
+import com.example.demo.service.AdminItemService;
 import com.example.demo.service.AdminLoanService;
 import com.example.demo.service.AdminLoginService;
 
@@ -40,6 +42,9 @@ public class AdminController {
 	
 	@Autowired
 	AdminLoanService adminloan;
+	
+	@Autowired
+	AdminItemService adminItem;
 	
 	
 	@GetMapping("/")
@@ -101,6 +106,32 @@ public class AdminController {
 	@DeleteMapping("/deleteLoanCard/{id}")
 	public ResponseEntity<String> deleteLoanCard(@PathVariable("id") String loan_id) {
 		return adminloan.deleteLoanCard(loan_id);
+		
+	}
+	
+	//Item CRUD Calls
+
+	@PostMapping("/createItem")
+	public ResponseEntity<String> createItem(@RequestBody Item item) {
+		return adminItem.createItem(item);
+		
+	}
+	
+	@PostMapping("/updateItem")
+	public ResponseEntity<String> updateItem(@RequestBody Item item) {
+		return adminItem.updateItem(item);
+		
+	}
+	
+	@GetMapping("/getItem/{id}")
+	public ResponseEntity<Item> getItem(@PathVariable("id") String itemId) {
+		return adminItem.getItem(itemId);
+		
+	}
+	
+	@DeleteMapping("/deleteItem/{id}")
+	public ResponseEntity<String> deleteItem(@PathVariable("id") String itemId) {
+		return adminItem.deleteItem(itemId);
 		
 	}
 	
