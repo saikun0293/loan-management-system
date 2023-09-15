@@ -1,10 +1,12 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 public class Item {
 	
 	@Id
+	@NotBlank
 	public String itemId;
 	public String itemDesc;
 	public char itemStatus;
