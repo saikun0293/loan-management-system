@@ -88,6 +88,13 @@ public class AdminController {
 	}
 	
 	
+	//LoanCard CRUD 
+	
+	@GetMapping("showAllLoanCards")
+	public List<LoanCards> showAllLoanCards(){
+		return adminloan.showAllLoanCards();
+	}
+	
 	@PostMapping("/createLoanCard")
 	public ResponseEntity<String> createLoanCard(@RequestBody LoanCards loan) {
 		return adminloan.createLoanCard(loan);

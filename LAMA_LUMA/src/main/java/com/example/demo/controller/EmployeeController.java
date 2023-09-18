@@ -32,6 +32,12 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService empService;
 	
+	
+	@GetMapping("/employee/getAllAppliedItems") //need to be checked and tested again
+	public List<Item> getAllAppliedItems(String empId){
+		return empService.getAllAppliedItems(empId);
+	}
+	
 	@PostMapping("/employee/applyForLoan")
 	public ResponseEntity<String> applyForLoan(@RequestParam(name="empId") String empId, @RequestParam(name="itemId") String itemId){
 		return empService.applyForLoan(empId, itemId);
@@ -42,6 +48,7 @@ public class EmployeeController {
 	public List<Item> getAllAvailableItems(){
 		return empService.getAllAvailableItems();
 	}
+	
 	
 
 }

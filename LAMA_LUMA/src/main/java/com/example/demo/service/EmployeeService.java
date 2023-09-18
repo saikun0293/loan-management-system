@@ -17,7 +17,7 @@ public interface EmployeeService {
 	public List<Item> getAllAvailableItems();
 	public List<LoanCards> getAllAppliedLoans();
 	//public List<Item> getAllAppliedItems();
-	public List<Item> getAllAppliedItems(String empId);
+	public List<Item> getAllAppliedItems(String employeeId);
 	
 
 }

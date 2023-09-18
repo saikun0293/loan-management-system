@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +40,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
-	public List<Item> getAllAppliedItems(String empId) {
-		// TODO Auto-generated method stub
+	public List<Item> getAllAppliedItems(String employeeId) {
+		List<Transactions> temp= trxRepo.findByemployeeId(employeeId);
+		Collection<Item> bought = null;
+		for(Transactions i: temp) {
+			bought.add(itemRepo.getOne(i.getItemId()));
+		}
+		return (List<Item>) bought;
 		
-		return null;
 	}
 
 	@Override

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.LoanCards;
 import com.example.demo.repository.LoanCardRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -15,6 +18,9 @@ public class AdminLoanServiceImpl implements AdminLoanService {
 	LoanCardRepository lcRepo;
 
 	@Override
+	
+	
+	
 	public ResponseEntity<String> createLoanCard(LoanCards loan) {
 		boolean exists=lcRepo.existsById(loan.getloanId());
 		if(exists)
@@ -61,5 +67,12 @@ public class AdminLoanServiceImpl implements AdminLoanService {
 		
 		return new ResponseEntity<>("Successfully deleted record",HttpStatus.OK);
 	}
+
+	@Override
+	public List<LoanCards> showAllLoanCards() {
+		return lcRepo.findAll();
+	}
+	
+	
 
 }
