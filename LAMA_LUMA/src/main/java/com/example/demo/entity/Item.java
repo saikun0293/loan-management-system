@@ -17,17 +17,29 @@ public class Item {
 	@Id
 	@Column(unique=true)
 	@NotBlank
-	public String itemId;
+	private String itemId;
+	public String getLoanId() {
+		return loanId;
+	}
+
+
+	public void setLoanId(String loanId) {
+		this.loanId = loanId;
+	}
+
+
 	@Column
-	public String itemDesc;
+	private String itemDesc;
 	@Column
-	public char itemStatus;
+	private char itemStatus;
 	@Column
-	public String itemMake;
+	private String itemMake;
 	@Column
-	public String itemCategory;
+	private String itemCategory;
 	@Column
-	public int itemValue;
+	private int itemValue;
+	@Column
+	private String loanId;
 
 	
 	public Item() {
