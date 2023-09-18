@@ -52,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 			newTrx.setEmployeeId(employeeId);
 			newTrx.setIssueDate(new Date());
 			newTrx.setItemId(ItemId);
-			newTrx.setLoanId(null);
+			newTrx.setLoanId(itemRepo.getReferenceById(ItemId).getLoanId());
 			newTrx.setTransactionId(UUID.randomUUID().toString().substring(10,16));
 			trxRepo.save(newTrx);
 			return new ResponseEntity<>("Loan Trx Successfull",HttpStatus.OK);
