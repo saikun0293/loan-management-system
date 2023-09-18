@@ -16,7 +16,8 @@ public interface EmployeeService {
 	public ResponseEntity<String> applyForLoan(String employeeId, String ItemId);
 	public List<Item> getAllAvailableItems();
 	public List<LoanCards> getAllAppliedLoans();
-	public List<Item> getAllAppliedItems();
+	//public List<Item> getAllAppliedItems();
+	public List<Item> getAllAppliedItems(String empId);
 	
 
 }

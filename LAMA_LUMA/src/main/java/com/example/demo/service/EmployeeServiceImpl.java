@@ -29,7 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public List<Item> getAllAvailableItems() {
 		// TODO Auto-generated method stub
-		return null;
+		
+		return itemRepo.findByitemStatus('Y');
 	}
 
 	@Override
@@ -39,8 +40,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public List<Item> getAllAppliedItems() {
+	public List<Item> getAllAppliedItems(String empId) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -60,5 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return new ResponseEntity<>("Cant process loan, item unavailable",HttpStatus.BAD_REQUEST);
 		
 	}
+
+	
 
 }
