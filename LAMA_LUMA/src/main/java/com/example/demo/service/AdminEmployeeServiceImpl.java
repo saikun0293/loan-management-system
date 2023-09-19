@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.entity.Transactions;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.repository.TransactionRepository;
 
 @Service
 public class AdminEmployeeServiceImpl implements AdminEmployeeService{
@@ -20,6 +22,9 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService{
 	private AdminRepository adminRepo;
 	@Autowired 
 	private EmployeeRepository empRepo;
+	
+	@Autowired
+	private TransactionRepository trxRepo;
 
 	@Override
 	public ResponseEntity<String> deleteEmployee(String id) {
@@ -47,6 +52,11 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService{
 		return empRepo.findAll();
 		
 	
+	}
+	
+	public List<Transactions> showEmployeeTransaction(String employeeId){
+		 List<Transactions> temp= trxRepo.findByemployeeId(employeeId);
+		 return temp;
 	}
 
 	@Override

@@ -1,8 +1,12 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,15 +44,26 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return null;
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
-	public List<Item> getAllAppliedItems(String employeeId) {
+	public List<Map<String, Object>> getAllAppliedItems(String employeeId) {
 		List<Transactions> temp= trxRepo.findByemployeeId(employeeId);
-		Collection<Item> bought = null;
-		for(Transactions i: temp) {
-			bought.add(itemRepo.getOne(i.getItemId()));
+		@SuppressWarnings("rawtypes")
+		ArrayList list=new ArrayList();
+		if (temp!=null) {
+			
+			for(Transactions i: temp) {
+				Map<String,Object> ret=new HashMap<>();
+				Item item = itemRepo.getOne(i.getItemId());
+				ret.put("itemId",item.getItemId());
+				ret.put("itemMake",item.getItemMake());
+				ret.put("itemDesc", item.getItemMake());
+				ret.put("itemValue", item.getItemValue());
+				ret.put("issueDate", i.getIssueDate());
+				list.add(ret);
+			}
 		}
-		return (List<Item>) bought;
+			return list;
 		
 	}
 
@@ -68,7 +83,5 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return new ResponseEntity<>("Cant process loan, item unavailable",HttpStatus.BAD_REQUEST);
 		
 	}
-
-	
 
 }

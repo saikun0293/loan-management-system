@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class EmployeeController {
 	
 	
 	@GetMapping("/employee/getAllAppliedItems") //need to be checked and tested again
-	public List<Item> getAllAppliedItems(String empId){
+	public List<Map<String, Object>> getAllAppliedItems(@RequestParam(name="empId") String empId){
 		return empService.getAllAppliedItems(empId);
 	}
 	

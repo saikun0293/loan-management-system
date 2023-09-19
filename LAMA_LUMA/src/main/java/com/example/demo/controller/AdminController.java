@@ -18,6 +18,7 @@ import com.example.demo.entity.Admin;
 import com.example.demo.entity.Employee;
 import com.example.demo.entity.Item;
 import com.example.demo.entity.LoanCards;
+import com.example.demo.entity.Transactions;
 import com.example.demo.exception.NoDataFoundException;
 import com.example.demo.exception.RecordAlreadyExistsException;
 import com.example.demo.exception.ResourceDoesNotExists;
@@ -144,6 +145,12 @@ public class AdminController {
 		return adminItem.deleteItem(itemId);
 		
 	}
+	
+	@GetMapping("/showEmployeeTransaction/{id}")
+		public List<Transactions> showAllTransaction(@PathVariable("id")String employeeId){
+			return adminservice.showEmployeeTransaction(employeeId);
+		}
+	
 	
 
 }

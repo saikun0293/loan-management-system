@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public interface EmployeeService {
 	public List<Item> getAllAvailableItems();
 	public List<LoanCards> getAllAppliedLoans();
 	//public List<Item> getAllAppliedItems();
-	public List<Item> getAllAppliedItems(String employeeId);
+	public List<Map<String, Object>> getAllAppliedItems(String employeeId);
 	
 
 }
