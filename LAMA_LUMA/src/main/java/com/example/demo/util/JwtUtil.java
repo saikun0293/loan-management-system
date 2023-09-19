@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-//It is meant for token generation and validation
+// It is meant for token generation and validation
 public class JwtUtil {
 
-    private String secret = "javafsdfsdsdsdf";
+    private String secret = "lamaLumaApplication";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -29,6 +29,7 @@ public class JwtUtil {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
@@ -44,22 +45,28 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 5000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    /*public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }*/
+    /*
+     * public Boolean validateToken(String token, UserDetails userDetails) {
+     * final String username = extractUsername(token);
+     * return (username.equals(userDetails.getUsername()) &&
+     * !isTokenExpired(token));
+     * }
+     */
     public Boolean validateToken(String token, Employee employee) {
         final String username = extractUsername(token);
         return (username.equals(employee.getUsername()) && !isTokenExpired(token));
-    
-}
-    public Boolean validateToken(String token){
-  	   return !isTokenExpired(token);
-     }
+    }
+
+    public Boolean validateToken(String token) {
+        return !isTokenExpired(token);
+    }
 
 }

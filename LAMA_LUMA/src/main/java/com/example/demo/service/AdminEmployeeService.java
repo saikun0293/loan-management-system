@@ -9,10 +9,14 @@ import com.example.demo.entity.Transactions;
 
 public interface AdminEmployeeService {
 	public ResponseEntity<String> deleteEmployee(String id);
-	public ResponseEntity<String> updateEmployee(Employee emp);
-	public List<Employee> ShowAllEmployee();
-	public Employee addEmployee(Employee emp);
-	public List<Transactions> showEmployeeTransaction(String employeeId);
-	
 
+	public ResponseEntity<String> updateEmployee(Employee emp);
+
+	public Employee getEmployeeById(String id);
+
+	public List<Employee> ShowAllEmployee();
+
+	public Employee addEmployee(Employee emp);
+
+	public List<Transactions> showEmployeeTransaction(String employeeId);
 }
