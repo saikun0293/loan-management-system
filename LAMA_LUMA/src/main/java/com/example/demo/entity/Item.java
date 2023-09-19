@@ -29,15 +29,15 @@ public class Item {
 
 
 	@Column
-	private String itemDesc;
+	private String name;
 	@Column
-	private char itemStatus;
+	private char issueStatus;
 	@Column
-	private String itemMake;
+	private String make;
 	@Column
-	private String itemCategory;
+	private String category;
 	@Column
-	private int itemValue;
+	private int value;
 	@Column
 	private String loanId;
 
@@ -59,52 +59,52 @@ public class Item {
 
 
 	public String getItemDesc() {
-		return itemDesc;
+		return name;
 	}
 
 
-	public void setItemDesc(String itemDesc) {
-		this.itemDesc = itemDesc;
+	public void setItemDesc(String name) {
+		this.name = name;
 	}
 
 
 	public char getItemStatus() {
-		return itemStatus;
+		return issueStatus;
 	}
 
 
-	public void setItemStatus(char itemStatus) {
-		this.itemStatus = itemStatus;
+	public void setItemStatus(char issueStatus) {
+		this.issueStatus = issueStatus;
 	}
 
 
 	public String getItemMake() {
-		return itemMake;
+		return make;
 	}
 
 
-	public void setItemMake(String itemMake) {
-		this.itemMake = itemMake;
+	public void setItemMake(String make) {
+		this.make = make;
 	}
 
 
 	public String getItemCategory() {
-		return itemCategory;
+		return category;
 	}
 
 
-	public void setItemCategory(String itemCategory) {
-		this.itemCategory = itemCategory;
+	public void setItemCategory(String category) {
+		this.category = category;
 	}
 
 
 	public int getItemValue() {
-		return itemValue;
+		return value;
 	}
 
 
-	public void setItemValue(int itemValue) {
-		this.itemValue = itemValue;
+	public void setItemValue(int value) {
+		this.value = value;
 	}
 	
 	

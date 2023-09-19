@@ -146,11 +146,11 @@ public class AdminController {
 		
 	}
 	
+	//ShowAllTransactionForanEmployee
 	@GetMapping("/showEmployeeTransaction/{id}")
 		public List<Transactions> showAllTransaction(@PathVariable("id")String employeeId){
 			return adminservice.showEmployeeTransaction(employeeId);
 		}
-	
 	
 
 }
