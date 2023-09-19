@@ -74,13 +74,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
           </Grid.Col>
           <Grid.Col span={6}>
             <NumberInput
-              label="Item Value"
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              formatter={(value) =>
-                !Number.isNaN(parseFloat(value))
-                  ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-                  : "$ "
-              }
+              label="Item Value (in Rs.)"
               {...form.getInputProps("value")}
             />
           </Grid.Col>
@@ -100,7 +94,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
                 value: d,
               }))}
               withAsterisk
-              {...form.getInputProps("category")}
+              {...form.getInputProps("make")}
             />
           </Grid.Col>
         </Grid>

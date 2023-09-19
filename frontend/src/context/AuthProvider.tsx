@@ -12,7 +12,7 @@ export const initialAuthState: GlobalAuthState = {
   config: {},
   // TODO: Change later
   isLoggedIn: true,
-  role: "admin",
+  role: "user",
 }
 
 const AuthContext = createContext({

@@ -41,3 +41,8 @@ export const userFormSchema = Yup.object({
     )
     .required("Please enter your password"),
 })
+
+export const loanApplicationSchema = Yup.object({
+  employeeId: Yup.string().required("Employee Id cannot be empty"),
+  itemId: Yup.string().required("Please select an item from the list"),
+})

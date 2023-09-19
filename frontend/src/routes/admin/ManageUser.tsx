@@ -13,6 +13,7 @@ import api from "../../api/axios"
 import { generateId } from "../../api/utils"
 import UserForm from "../../components/UserForm"
 import { User } from "../../types"
+import { createFalse } from "typescript"
 
 const initialUserState: User = {
   employeeId: generateId("K", 7),
@@ -34,7 +35,7 @@ const ManageUser: React.FC = () => {
 
   const fetchAllUsers = async () => {
     try {
-      const resUsers = await api.get<User[]>("/showAllEmployees")
+      const resUsers = await api.get<User[]>("/showAllEmployee")
       setUsers(
         resUsers.data.map((d) => ({
           ...d,
@@ -68,9 +69,10 @@ const ManageUser: React.FC = () => {
     try {
       const res = await api.post("/addEmployee", user)
       notifications.show({
-        title: `${res.statusText}`,
-        message: res.data,
+        title: `User created`,
+        message: "User has been created successfully",
       })
+      fetchAllUsers()
     } catch (e) {
       console.log("Error while creating user", e)
     }
@@ -83,8 +85,23 @@ const ManageUser: React.FC = () => {
         title: `${res.statusText}`,
         message: res.data,
       })
+      setModalOpen(false)
+      fetchAllUsers()
     } catch (e) {
       console.log("Error while updating user with id ", user.employeeId, e)
+    }
+  }
+
+  const deleteUser = async (empId: string) => {
+    try {
+      const res = await api.delete(`/deleteEmployee/${empId}`)
+      notifications.show({
+        title: `${res.statusText}`,
+        message: res.data,
+      })
+      fetchAllUsers()
+    } catch (e) {
+      console.log("Error while updating user with id ", empId, e)
     }
   }
 
@@ -110,7 +127,7 @@ const ManageUser: React.FC = () => {
           <Button
             variant="light"
             color="red"
-            onClick={() => console.log(`delete User - ${user.employeeId}`)}
+            onClick={() => deleteUser(user.employeeId)}
           >
             Delete
           </Button>

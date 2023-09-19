@@ -7,7 +7,7 @@ const App = () => {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <AuthProvider>
-        <Notifications position="top-right" autoClose={2000} />
+        <Notifications position="top-right" autoClose={8000} />
         <Text
           component="h1"
           variant="gradient"

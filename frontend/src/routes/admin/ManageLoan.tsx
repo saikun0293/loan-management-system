@@ -28,7 +28,7 @@ const ManageLoan: React.FC = () => {
 
   const fetchAllLoans = async () => {
     try {
-      const res = await api.get<Loan[]>("/showAllLoans")
+      const res = await api.get<Loan[]>("/showAllLoanCards")
       setLoans(res.data)
     } catch (e) {
       console.log("Error while fetching loans", e)
@@ -52,11 +52,12 @@ const ManageLoan: React.FC = () => {
 
   const createLoan = async (loan: Loan) => {
     try {
-      const res = await api.post("/addLoan", loan)
+      const res = await api.post("/createLoanCard", loan)
       notifications.show({
         title: `${res.statusText}`,
         message: "Loan card has been created successfully",
       })
+      fetchAllLoans()
     } catch (e) {
       console.log("Error while creating loan", e)
     }
@@ -64,13 +65,28 @@ const ManageLoan: React.FC = () => {
 
   const updateLoan = async (loan: Loan) => {
     try {
-      const res = await api.post("/updateLoan", loan)
+      const res = await api.post("/updateLoanCard", loan)
       notifications.show({
         title: `${res.statusText}`,
         message: "Loan card has been updated successfully",
       })
+      setModalOpen(false)
+      fetchAllLoans()
     } catch (e) {
       console.log("Error while updating user with id ", loan.loanId, e)
+    }
+  }
+
+  const deleteLoan = async (loanId: string) => {
+    try {
+      const res = await api.delete(`/deleteLoanCard/${loanId}`)
+      notifications.show({
+        title: `${res.statusText}`,
+        message: res.data,
+      })
+      fetchAllLoans()
+    } catch (e) {
+      console.log("Error while updating loan with id ", loanId, e)
     }
   }
 
@@ -92,7 +108,7 @@ const ManageLoan: React.FC = () => {
           <Button
             variant="light"
             color="red"
-            onClick={() => console.log(`delete User - ${loan.loanId}`)}
+            onClick={() => deleteLoan(loan.loanId)}
           >
             Delete
           </Button>

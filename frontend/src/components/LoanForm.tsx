@@ -53,8 +53,9 @@ const LoanForm: React.FC<LoanFormProps> = ({
             label="Loan Type"
             data={loanTypes.map((d) => ({
               label: d,
-              value: d.toLowerCase(),
+              value: d,
             }))}
+            defaultValue={initialLoanState.loanType}
             withAsterisk
             {...form.getInputProps("loanType")}
           />

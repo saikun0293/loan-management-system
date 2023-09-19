@@ -16,6 +16,9 @@ import ManageUser from "./routes/admin/ManageUser"
 import Dashboard, { NavLink } from "./routes/Dashboard"
 import Home from "./routes/Home"
 import Login from "./routes/Login"
+import LoansApply from "./routes/user/LoansApply"
+import LoanCardsAvailed from "./routes/user/LoanCardsAvailed"
+import ItemsPurchased from "./routes/user/ItemsPurchased"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
@@ -78,15 +81,15 @@ const router = createBrowserRouter([
           },
           {
             path: "loans/view",
-            element: <div>View Loans</div>,
+            element: <LoanCardsAvailed />,
           },
           {
             path: "loans/apply",
-            element: <div>Apply for Loans</div>,
+            element: <LoansApply />,
           },
           {
             path: "items",
-            element: <div>Items Purchased</div>,
+            element: <ItemsPurchased />,
           },
         ],
       },

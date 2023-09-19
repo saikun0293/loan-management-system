@@ -51,7 +51,7 @@ const UserForm: React.FC<UserFormProps> = ({
               label="Designation"
               data={designations.map((d) => ({
                 label: d,
-                value: d.toLowerCase(),
+                value: d,
               }))}
               withAsterisk
               {...form.getInputProps("designation")}
@@ -77,7 +77,7 @@ const UserForm: React.FC<UserFormProps> = ({
               label="Department"
               data={departments.map((d) => ({
                 label: d,
-                value: d.toLowerCase(),
+                value: d,
               }))}
               withAsterisk
               {...form.getInputProps("dept")}

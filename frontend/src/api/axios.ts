@@ -25,8 +25,9 @@ api.interceptors.response.use(
       notifications.show({
         title: `${error.status} ${error.code}`,
         message: error.response
-          ? error.response.data
+          ? error.response.data.message
           : "There seems to be an unknown issue. Contact administrator",
+        color: "red",
       })
     }
     return Promise.reject(error)

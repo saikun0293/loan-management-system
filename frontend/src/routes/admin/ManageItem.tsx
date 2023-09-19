@@ -64,25 +64,41 @@ const ManageItem: React.FC = () => {
 
   const createItem = async (item: Item) => {
     try {
-      const res = await api.post("/addItem", item)
+      const res = await api.post("/createItem", item)
       notifications.show({
         title: `${res.statusText}`,
         message: res.data,
       })
+      fetchAllItems()
     } catch (e) {
       console.log("Error while creating item", e)
     }
   }
 
-  const updateitem = async (item: Item) => {
+  const updateItem = async (item: Item) => {
     try {
       const res = await api.post("/updateItem", item)
       notifications.show({
         title: `${res.statusText}`,
         message: res.data,
       })
+      setModalOpen(false)
+      fetchAllItems()
     } catch (e) {
       console.log("Error while updating item with id ", item.itemId, e)
+    }
+  }
+
+  const deleteItem = async (itemId: string) => {
+    try {
+      const res = await api.delete(`/deleteItem/${itemId}`)
+      notifications.show({
+        title: `${res.statusText}`,
+        message: res.data,
+      })
+      fetchAllItems()
+    } catch (e) {
+      console.log("Error while updating item with id ", itemId, e)
     }
   }
 
@@ -107,7 +123,7 @@ const ManageItem: React.FC = () => {
           <Button
             variant="light"
             color="red"
-            onClick={() => console.log(`delete item - ${item.itemId}`)}
+            onClick={() => deleteItem(item.itemId)}
           >
             Delete
           </Button>
@@ -133,7 +149,7 @@ const ManageItem: React.FC = () => {
       <Tabs.Panel value="manageitems">
         <Container>
           <Flex justify="space-between" align="center">
-            <Text component="h2">Employees Registered</Text>
+            <Text component="h2">Items Created</Text>
             <Button variant="light" onClick={fetchAllItems}>
               Refresh
             </Button>
@@ -142,7 +158,7 @@ const ManageItem: React.FC = () => {
             <ItemForm
               itemCategories={categories}
               itemMakes={itemMakes}
-              onSubmit={createItem}
+              onSubmit={updateItem}
               initialItemState={editItem}
             />
           </Modal>
