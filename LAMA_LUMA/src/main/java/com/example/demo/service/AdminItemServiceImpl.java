@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Item;
+import com.example.demo.entity.LoanCards;
 import com.example.demo.repository.ItemRepository;
 
 
@@ -60,6 +63,11 @@ public class AdminItemServiceImpl implements AdminItemService {
 		Item item = itemRepo.getReferenceById(itemId);
 		
 		return new ResponseEntity<>(item,HttpStatus.OK);
+	}
+
+	@Override
+	public List<Item> showAllItems() {
+		return itemRepo.findAll();
 	}
 
 	
