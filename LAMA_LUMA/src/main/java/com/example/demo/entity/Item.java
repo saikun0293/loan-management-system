@@ -18,16 +18,6 @@ public class Item {
 	@Column(unique=true)
 	@NotBlank
 	private String itemId;
-	public String getLoanId() {
-		return loanId;
-	}
-
-
-	public void setLoanId(String loanId) {
-		this.loanId = loanId;
-	}
-
-
 	@Column
 	private String name;
 	@Column
@@ -58,57 +48,67 @@ public class Item {
 	}
 
 
-	public String getItemDesc() {
+	public String getName() {
 		return name;
 	}
 
 
-	public void setItemDesc(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
 
-	public char getItemStatus() {
+	public char getIssueStatus() {
 		return issueStatus;
 	}
 
 
-	public void setItemStatus(char issueStatus) {
+	public void setIssueStatus(char issueStatus) {
 		this.issueStatus = issueStatus;
 	}
 
 
-	public String getItemMake() {
+	public String getMake() {
 		return make;
 	}
 
 
-	public void setItemMake(String make) {
+	public void setMake(String make) {
 		this.make = make;
 	}
 
 
-	public String getItemCategory() {
+	public String getCategory() {
 		return category;
 	}
 
 
-	public void setItemCategory(String category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 
 
-	public int getItemValue() {
+	public int getValue() {
 		return value;
 	}
 
 
-	public void setItemValue(int value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
+
+
+	public String getLoanId() {
+		return loanId;
+	}
+
+
+	public void setLoanId(String loanId) {
+		this.loanId = loanId;
+	}
+
 	
-	
-	
+
 	
 
 }
