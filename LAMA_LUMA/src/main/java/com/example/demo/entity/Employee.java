@@ -1,49 +1,122 @@
 package com.example.demo.entity;
 
+import java.util.Date;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.validation.constraints.NotBlank;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
+
 @Entity
-@Table(name="employee_details")
+
+@Table
 public class Employee {
 
 	@Id
-	@Column(name="emp_id")
+	@Column(unique = true)
+	@NotBlank(message = "Emp ID cannot be blank")
+	@Length(min = 6, max = 100, message = "Emp ID has to be more than 6 character")
 	private String employeeId;
+
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	@Column(name="name")
+
+	@Column
 	private String name;
-	@Column(name="password")
+	@Column
+	@NotBlank(message = "Password cant be blank")
+	@Length(min = 6, max = 100, message = "Password has to be more than 6 character")
 	private String password;
+	@Column
+	private String designation;
+	@Column
+	private Date doj;
+	@Column
+	private Date dob;
+	@Column
+	private String gender;
+	@Column
+	private String dept;
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public Date getDoj() {
+		return doj;
+	}
+
+	public void setDoj(Date doj) {
+		this.doj = doj;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getDept() {
+		return dept;
+	}
+
+	public void setDept(String dept) {
+		this.dept = dept;
+	}
+
 	public Employee(String employeeId, String name, String password) {
 		super();
 		this.employeeId = employeeId;
 		this.name = name;
 		this.password = password;
 	}
+
 	public String getEmployeeId() {
 		return employeeId;
 	}
+
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
 }

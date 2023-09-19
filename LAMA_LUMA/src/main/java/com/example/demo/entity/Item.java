@@ -1,111 +1,92 @@
 package com.example.demo.entity;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
-@Table(name = "Item")
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @Entity
-public class Item implements Serializable{
+public class Item {
+
 	@Id
-	@NotBlank(message = "Item id cannot be empty.")
-	@Column(unique=true)
+	@Column(unique = true)
+	@NotBlank
 	private String itemId;
 	@Column
-	private String itemDesc;
+	private String name;
 	@Column
-	private char itemStatus;
+	private boolean issueStatus;
 	@Column
-	private String itemMake;
+	private String make;
 	@Column
-	private String itemCategory;
+	private String category;
 	@Column
-	private int itemValue;
+	private int value;
 	@Column
 	private String loanId;
 
-	
 	public Item() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public String getItemId() {
 		return itemId;
 	}
-
 
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
 
-
-	public String getItemDesc() {
-		return itemDesc;
+	public String getName() {
+		return name;
 	}
 
-
-	public void setItemDesc(String itemDesc) {
-		this.itemDesc = itemDesc;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-
-	public char getItemStatus() {
-		return itemStatus;
+	public boolean getIssueStatus() {
+		return issueStatus;
 	}
 
-
-	public void setItemStatus(char itemStatus) {
-		this.itemStatus = itemStatus;
+	public void setIssueStatus(boolean issueStatus) {
+		this.issueStatus = issueStatus;
 	}
 
-
-	public String getItemMake() {
-		return itemMake;
+	public String getMake() {
+		return make;
 	}
 
-
-	public void setItemMake(String itemMake) {
-		this.itemMake = itemMake;
+	public void setMake(String make) {
+		this.make = make;
 	}
 
-
-	public String getItemCategory() {
-		return itemCategory;
+	public String getCategory() {
+		return category;
 	}
 
-
-	public void setItemCategory(String itemCategory) {
-		this.itemCategory = itemCategory;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
-
-	public int getItemValue() {
-		return itemValue;
+	public int getValue() {
+		return value;
 	}
 
-
-	public void setItemValue(int itemValue) {
-		this.itemValue = itemValue;
+	public void setValue(int value) {
+		this.value = value;
 	}
-	
+
 	public String getLoanId() {
 		return loanId;
 	}
 
-
 	public void setLoanId(String loanId) {
 		this.loanId = loanId;
-	}	
+	}
 
 }
