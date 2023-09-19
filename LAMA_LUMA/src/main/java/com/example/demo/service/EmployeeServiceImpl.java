@@ -33,9 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public List<Item> getAllAvailableItems() {
-		// TODO Auto-generated method stub
 		
-		return itemRepo.findByitemStatus('Y');
+		return itemRepo.findByissueStatus('Y');
 	}
 
 	@Override
@@ -56,9 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 				Map<String,Object> ret=new HashMap<>();
 				Item item = itemRepo.getOne(i.getItemId());
 				ret.put("itemId",item.getItemId());
-				ret.put("itemMake",item.getItemMake());
-				ret.put("itemDesc", item.getItemMake());
-				ret.put("itemValue", item.getItemValue());
+				ret.put("make",item.getItemMake());
+				ret.put("name", item.getItemDesc());
+				ret.put("value", item.getItemValue());
 				ret.put("issueDate", i.getIssueDate());
 				list.add(ret);
 			}

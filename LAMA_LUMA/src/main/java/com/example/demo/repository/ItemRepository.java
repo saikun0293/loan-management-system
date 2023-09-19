@@ -9,6 +9,6 @@ import com.example.demo.entity.Item;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, String>{
-	List<Item> findByitemStatus(char c);
+	List<Item> findByissueStatus(char c);
 
 }
