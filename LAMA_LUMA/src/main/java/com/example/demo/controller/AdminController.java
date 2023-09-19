@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +21,6 @@ import com.example.demo.exception.NoDataFoundException;
 import com.example.demo.exception.RecordAlreadyExistsException;
 import com.example.demo.exception.ResourceDoesNotExists;
 import com.example.demo.repository.AdminRepository;
-import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AdminEmployeeService;
 import com.example.demo.service.AdminItemService;
 import com.example.demo.service.AdminLoanService;
@@ -35,8 +32,6 @@ import com.example.demo.service.AdminLoginService;
 public class AdminController {
 	@Autowired
 	private AdminRepository adminRepo;
-	@Autowired
-	private EmployeeRepository empRepo;
 	
 	@Autowired
 	AdminLoginService loginService;
@@ -138,6 +133,10 @@ public class AdminController {
 	public ResponseEntity<Item> getItem(@PathVariable("id") String itemId) {
 		return adminItem.getItem(itemId);
 		
+	}
+	@GetMapping("/showAllItems")
+	public List<Item> showAllItems(){
+		return adminItem.showAllItems();
 	}
 	
 	@DeleteMapping("/deleteItem/{id}")
