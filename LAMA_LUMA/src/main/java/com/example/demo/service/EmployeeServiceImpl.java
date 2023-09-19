@@ -34,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public List<Item> getAllAvailableItems() {
 		
-		return itemRepo.findByissueStatus('Y');
+		return itemRepo.findByissueStatus(true);
 	}
 
 	@Override

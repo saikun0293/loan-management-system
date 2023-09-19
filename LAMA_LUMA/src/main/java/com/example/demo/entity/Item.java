@@ -18,7 +18,7 @@ public class Item {
 	@Column
 	private String name;
 	@Column
-	private char issueStatus;
+	private boolean issueStatus;
 	@Column
 	private String make;
 	@Column
@@ -55,12 +55,12 @@ public class Item {
 	}
 
 
-	public char getIssueStatus() {
+	public boolean getIssueStatus() {
 		return issueStatus;
 	}
 
 
-	public void setIssueStatus(char issueStatus) {
+	public void setIssueStatus(boolean issueStatus) {
 		this.issueStatus = issueStatus;
 	}
 
