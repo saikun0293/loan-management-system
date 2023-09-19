@@ -19,6 +19,7 @@ import com.example.demo.entity.Item;
 import com.example.demo.entity.LoanCards;
 import com.example.demo.entity.Transactions;
 import com.example.demo.repository.ItemRepository;
+import com.example.demo.repository.LoanCardRepository;
 import com.example.demo.repository.TransactionRepository;
 
 @Service
@@ -30,6 +31,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Autowired 
 	TransactionRepository trxRepo;
 	
+	@Autowired
+	LoanCardRepository lcRepo;
+	
 
 	@Override
 	public List<Item> getAllAvailableItems() {
@@ -37,11 +41,21 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return itemRepo.findByissueStatus(true);
 	}
 
-	@Override
-	public List<LoanCards> getAllAppliedLoans() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@SuppressWarnings("deprecation")
+//	@Override
+////	public List<LoanCards> getAllAppliedLoans(String employeeId) {
+////		// TODO Auto-generated method stub
+////		List<Transactions> temp= trxRepo.findByemployeeId(employeeId);
+////		for(Transactions i : temp) {
+////			Item item=itemRepo.getById(i.getItemId());
+////			List<LoanCards> lc=lcRepo.findByloanType(item.getCategory());
+////			for(LoanCards j: lc) {
+////				if
+////			}
+////			
+////		}
+////		return null;
+////	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
@@ -57,6 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 				ret.put("itemId",item.getItemId());
 				ret.put("make",item.getMake());
 				ret.put("name", item.getName());
+				ret.put("category", item.getCategory());
 				ret.put("value", item.getValue());
 				ret.put("issueDate", i.getIssueDate());
 				list.add(ret);
