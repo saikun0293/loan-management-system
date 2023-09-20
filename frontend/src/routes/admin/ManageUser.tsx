@@ -13,7 +13,6 @@ import api from "../../api/axios"
 import { generateId } from "../../api/utils"
 import UserForm from "../../components/UserForm"
 import { User } from "../../types"
-import { createFalse } from "typescript"
 
 const initialUserState: User = {
   employeeId: generateId("K", 7),
@@ -67,7 +66,7 @@ const ManageUser: React.FC = () => {
 
   const createUser = async (user: User) => {
     try {
-      const res = await api.post("/addEmployee", user)
+      await api.post("/addEmployee", user)
       notifications.show({
         title: `User created`,
         message: "User has been created successfully",

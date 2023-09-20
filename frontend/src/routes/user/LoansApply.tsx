@@ -83,7 +83,7 @@ const LoansApply: FC = () => {
 
   const applyForLoan = async (loanApp: LoanApplication) => {
     try {
-      const res = await api.post(
+      await api.post(
         `/employee/applyForLoan?empId=${loanApp.employeeId}&itemId=${loanApp.itemId}`,
         {}
       )

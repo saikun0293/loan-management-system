@@ -26,7 +26,8 @@ const ItemsPurchased = () => {
   }, [])
 
   const rows = itemsPurchased.map((item) => (
-    <tr key={item.itemId}>
+    <tr key={item.transactionId}>
+      <td>{item.transactionId}</td>
       <td>{item.itemId}</td>
       <td>{item.name}</td>
       <td>{item.make}</td>
@@ -47,6 +48,7 @@ const ItemsPurchased = () => {
         <thead>
           <tr>
             <th>Issue Id</th>
+            <th>Item Id</th>
             <th>Item Name</th>
             <th>Item Make</th>
             <th>Item Category</th>

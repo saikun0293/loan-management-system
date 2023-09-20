@@ -9,11 +9,14 @@ interface CardAvailed extends Loan {
 
 const LoanCardsAvailed = () => {
   const [cardsAvailed, setCardsAvailed] = useState<CardAvailed[]>([])
+  const empId = "k310764"
 
   useEffect(() => {
     const fetchAllCardsAvailed = async () => {
       try {
-        const res = await api.get<CardAvailed[]>("/employee/getAllLoanCardsAvailed")
+        const res = await api.post<CardAvailed[]>(
+          `/employee/getAllAppliedLoans?empId=${empId}`
+        )
         setCardsAvailed(res.data)
       } catch (e) {
         console.log("Error while fetching loans", e)
