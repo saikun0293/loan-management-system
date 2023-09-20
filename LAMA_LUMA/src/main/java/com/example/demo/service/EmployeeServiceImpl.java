@@ -68,6 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 			for(Transactions i: temp) {
 				Map<String,Object> ret=new HashMap<>();
 				Item item = itemRepo.getOne(i.getItemId());
+				ret.put("transactionId",i.getTransactionId());
 				ret.put("itemId",item.getItemId());
 				ret.put("make",item.getMake());
 				ret.put("name", item.getName());
