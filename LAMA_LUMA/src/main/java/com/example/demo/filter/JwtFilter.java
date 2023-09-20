@@ -4,19 +4,15 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.entity.Employee;
-import com.example.demo.service.AdminEmployeeService;
-import com.example.demo.service.AdminLoginService;
 import com.example.demo.service.AuthService;
-import com.example.demo.service.EmployeeService;
-import com.example.demo.util.JwtUtil;
+import com.example.demo.service.UserDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,15 +20,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-// Check Token Validaity
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     private AuthService service;
 
+    @Autowired
+    private UserDetailsService userService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-            FilterChain filterChain) throws ServletException, IOException {
+            FilterChain filterChain) throws ServletException, IOException, UsernameNotFoundException {
 
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
         String token = null;
@@ -44,11 +42,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            SimpleGrantedAuthority role = service.checkUserRole(userId);
-
+            UserDetails userDetails = userService.loadUserByUserId(userId);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                    employee, null, employee.getAuthorities());
+                    userDetails, null,
+                    userDetails.getAuthorities());
             usernamePasswordAuthenticationToken
                     .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

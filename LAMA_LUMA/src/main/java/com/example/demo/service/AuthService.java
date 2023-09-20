@@ -1,15 +1,19 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.Employee;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.repository.EmployeeRepository;
@@ -22,42 +26,27 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AuthService {
     private String secret = "lamaLumaApplication";
 
-    // Authorities
-    private SimpleGrantedAuthority roleUser = new SimpleGrantedAuthority("USER");
-    private SimpleGrantedAuthority roleAdmin = new SimpleGrantedAuthority("ADMIN");
-    private SimpleGrantedAuthority roleAnonymous = new SimpleGrantedAuthority("ANONYMOUS");
-
     @Autowired
-    AdminRepository adminRepo;
-
-    @Autowired
-    EmployeeRepository empRepo;
-
-    public SimpleGrantedAuthority checkUserRole(String empId) {
-        SimpleGrantedAuthority curr;
-        if (adminRepo.existsById(empId))
-            curr = roleAdmin;
-        else if (empRepo.existsById(empId))
-            curr = roleUser;
-        curr = roleAnonymous;
-        return curr;
-    }
+    UserDetailsService userService;
 
     public String generateToken(String empId) throws Exception {
-        Map<String, Object> claims = new HashMap<>();
-        Optional<Employee> _emp = empRepo.findById(empId);
+        UserDetails userDetails = userService.loadUserByUserId(empId);
+        List<String> roles
 
-        String currRole = checkUserRole(empId).getAuthority();
-
-        if (currRole == roleUser.getAuthority() && _emp.isPresent()) {
+        if(roles.contains(roleUser)){
             Employee emp = _emp.get();
             claims.put("dept", emp.getDept());
             claims.put("designation", emp.getDesignation());
             claims.put("empId", emp.getEmployeeId());
             claims.put("name", emp.getName());
         }
+        if(roles.contains(roleAdmin)){
+            Admin admin = _admin.get();
+            claims.put("empId",admin.getAdminId());
+            claims.put("name", admin.getName());
+        }
 
-        claims.put("role", currRole);
+        claims.put("roles", rolesToStr);
         return createToken(claims, empId);
     }
 
