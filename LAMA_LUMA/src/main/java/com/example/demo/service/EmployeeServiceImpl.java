@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,21 +43,19 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return itemRepo.findByissueStatus(true);
 	}
 
-//	@SuppressWarnings("deprecation")
-//	@Override
-////	public List<LoanCards> getAllAppliedLoans(String employeeId) {
-////		// TODO Auto-generated method stub
-////		List<Transactions> temp= trxRepo.findByemployeeId(employeeId);
-////		for(Transactions i : temp) {
-////			Item item=itemRepo.getById(i.getItemId());
-////			List<LoanCards> lc=lcRepo.findByloanType(item.getCategory());
-////			for(LoanCards j: lc) {
-////				if
-////			}
-////			
-////		}
-////		return null;
-////	}
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public Set<LoanCards> getAllAppliedLoans(String employeeId) {
+		// TODO Auto-generated method stub
+		List<Transactions> temp= trxRepo.findByemployeeId(employeeId);
+		Set<LoanCards> lc = new HashSet<LoanCards>();
+		for(Transactions i : temp) {
+			Item item=itemRepo.getById(i.getItemId());
+			lc.add(lcRepo.findByloanType(item.getCategory()));
+		}
+		
+		return lc;
+	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
@@ -98,5 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return new ResponseEntity<>("Cant process loan, item unavailable",HttpStatus.BAD_REQUEST);
 		
 	}
+
+	
 
 }
