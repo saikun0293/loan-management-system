@@ -1,16 +1,18 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Admin;
@@ -23,31 +25,93 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class AuthService {
+public class AuthService implements UserDetailsService {
+
     private String secret = "lamaLumaApplication";
 
+    enum Role {
+        ADMIN,
+        EMPLOYEE
+    }
+
+    SimpleGrantedAuthority roleEmp = new SimpleGrantedAuthority(Role.EMPLOYEE.toString());
+    SimpleGrantedAuthority roleAdmin = new SimpleGrantedAuthority(Role.ADMIN.toString());
+
     @Autowired
-    UserDetailsService userService;
+    EmployeeRepository empRepo;
 
-    public String generateToken(String empId) throws Exception {
-        UserDetails userDetails = userService.loadUserByUserId(empId);
-        List<String> roles
+    @Autowired
+    AdminRepository adminRepo;
 
-        if(roles.contains(roleUser)){
-            Employee emp = _emp.get();
+    public Role identifyUserRole(String username) throws UsernameNotFoundException {
+        if (adminRepo.existsById(username))
+            return Role.ADMIN;
+        else if (empRepo.existsById(username))
+            return Role.EMPLOYEE;
+        throw new UsernameNotFoundException("User with id " + username + " not found");
+    }
+
+    public Object getUserObject(String username) throws UsernameNotFoundException {
+        Optional<Employee> _emp = empRepo.findById(username);
+        Optional<Admin> _admin = adminRepo.findById(username);
+
+        if (_admin.isPresent())
+            return _admin.get();
+        else if (_emp.isPresent())
+            return _emp.get();
+
+        throw new UsernameNotFoundException("User with id " + username + " not found");
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Role role = identifyUserRole(username);
+
+        if (role.equals(Role.ADMIN)) {
+            Admin admin = (Admin) getUserObject(username);
+            return User.builder()
+                    .username(username)
+                    .password(admin.getPassword())
+                    .authorities(Collections.singletonList(roleAdmin))
+                    .build();
+        }
+
+        else if (role.equals(Role.EMPLOYEE)) {
+            Employee emp = (Employee) getUserObject(username);
+            return User.builder()
+                    .username(username)
+                    .password(emp.getPassword())
+                    .authorities(Collections.singletonList(roleEmp))
+                    .build();
+        }
+
+        throw new UsernameNotFoundException("User with id " + username + " not found");
+    }
+
+    // JWT Utils
+    public String generateToken(String username) throws Exception {
+        Map<String, Object> claims = new HashMap<>();
+        Role role = identifyUserRole(username);
+
+        if (role.equals(Role.ADMIN)) {
+            Admin admin = (Admin) getUserObject(username);
+
+            claims.put("empId", admin.getAdminId());
+            claims.put("name", admin.getName());
+            claims.put("role", roleAdmin.getAuthority());
+        }
+
+        else if (role.equals(Role.EMPLOYEE)) {
+            Employee emp = (Employee) getUserObject(username);
+
             claims.put("dept", emp.getDept());
             claims.put("designation", emp.getDesignation());
             claims.put("empId", emp.getEmployeeId());
             claims.put("name", emp.getName());
-        }
-        if(roles.contains(roleAdmin)){
-            Admin admin = _admin.get();
-            claims.put("empId",admin.getAdminId());
-            claims.put("name", admin.getName());
+            claims.put("role", roleEmp.getAuthority());
         }
 
-        claims.put("roles", rolesToStr);
-        return createToken(claims, empId);
+        return createToken(claims, username);
     }
 
     public String createToken(Map<String, Object> claims, String empId) {
@@ -59,7 +123,11 @@ public class AuthService {
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    // Utils
+    public Boolean validateToken(String token, UserDetails user) {
+        final String username = extractUsername(token);
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

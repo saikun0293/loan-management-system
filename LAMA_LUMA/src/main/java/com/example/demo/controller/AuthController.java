@@ -27,11 +27,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(
-            @RequestBody AuthRequest request) {
+            @RequestBody AuthRequest request) throws Exception {
         UsernamePasswordAuthenticationToken newToken = new UsernamePasswordAuthenticationToken(
                 request.getUserName(),
                 request.getPassword());
-        Authentication autmmhentication = authenticationManager.authenticate(newToken);
+        Authentication authentication = authenticationManager.authenticate(newToken);
 
         if (authentication.isAuthenticated()) {
             String accessToken = service.generateToken(request.getUserName());
