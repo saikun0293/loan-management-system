@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -20,26 +21,26 @@ import com.example.demo.service.AuthService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    // Used to authenticate username and password using password encoder and
-    // userdetails service
-    @Autowired
-    DaoAuthenticationProvider authProvider;
-
     // Implements user details service
     @Autowired
     AuthService authService;
-
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
 
     // intercepts request takes credentials and passes to auth manager
     @Autowired
     JwtFilter jwtFilter;
 
     @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // Used to authenticate username and password using password encoder and
+    // userdetails service
+    @Bean
     AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(authService);
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
@@ -51,7 +52,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(requests -> requests
-                .requestMatchers("/", "/auth/**").permitAll())
+                .requestMatchers("/", "/**").permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

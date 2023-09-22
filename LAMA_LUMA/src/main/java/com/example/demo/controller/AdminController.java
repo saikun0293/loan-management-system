@@ -21,7 +21,6 @@ import com.example.demo.entity.Transactions;
 import com.example.demo.exception.NoDataFoundException;
 import com.example.demo.exception.RecordAlreadyExistsException;
 import com.example.demo.exception.ResourceDoesNotExists;
-import com.example.demo.repository.AdminRepository;
 import com.example.demo.service.AdminEmployeeService;
 import com.example.demo.service.AdminItemService;
 import com.example.demo.service.AdminLoanService;
@@ -31,8 +30,6 @@ import com.example.demo.service.AdminLoginService;
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("http://localhost:3000")
 public class AdminController {
-	@Autowired
-	private AdminRepository adminRepo;
 
 	@Autowired
 	AdminLoginService loginService;
@@ -53,7 +50,7 @@ public class AdminController {
 
 	@PostMapping("/addAdmin")
 	public Admin addAdmin(@RequestBody Admin admin) {
-		return (Admin) adminRepo.save(admin);
+		return loginService.addAdmin(admin);
 	}
 
 	@PostMapping("/addEmployee")

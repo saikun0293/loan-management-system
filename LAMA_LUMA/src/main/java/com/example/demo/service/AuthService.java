@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,11 +24,13 @@ import com.example.demo.repository.EmployeeRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class AuthService implements UserDetailsService {
 
-    private String secret = "lamaLumaApplication";
+    public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
     enum Role {
         ADMIN,
@@ -51,15 +54,17 @@ public class AuthService implements UserDetailsService {
         throw new UsernameNotFoundException("User with id " + username + " not found");
     }
 
-    public Object getUserObject(String username) throws UsernameNotFoundException {
+    public Employee getEmployee(String username) throws UsernameNotFoundException {
         Optional<Employee> _emp = empRepo.findById(username);
-        Optional<Admin> _admin = adminRepo.findById(username);
+        if (_emp.isPresent())
+            return _emp.get();
+        throw new UsernameNotFoundException("User with id " + username + " not found");
+    }
 
+    public Admin getAdmin(String username) throws UsernameNotFoundException {
+        Optional<Admin> _admin = adminRepo.findById(username);
         if (_admin.isPresent())
             return _admin.get();
-        else if (_emp.isPresent())
-            return _emp.get();
-
         throw new UsernameNotFoundException("User with id " + username + " not found");
     }
 
@@ -68,7 +73,7 @@ public class AuthService implements UserDetailsService {
         Role role = identifyUserRole(username);
 
         if (role.equals(Role.ADMIN)) {
-            Admin admin = (Admin) getUserObject(username);
+            Admin admin = getAdmin(username);
             return User.builder()
                     .username(username)
                     .password(admin.getPassword())
@@ -77,7 +82,7 @@ public class AuthService implements UserDetailsService {
         }
 
         else if (role.equals(Role.EMPLOYEE)) {
-            Employee emp = (Employee) getUserObject(username);
+            Employee emp = getEmployee(username);
             return User.builder()
                     .username(username)
                     .password(emp.getPassword())
@@ -94,7 +99,7 @@ public class AuthService implements UserDetailsService {
         Role role = identifyUserRole(username);
 
         if (role.equals(Role.ADMIN)) {
-            Admin admin = (Admin) getUserObject(username);
+            Admin admin = getAdmin(username);
 
             claims.put("empId", admin.getAdminId());
             claims.put("name", admin.getName());
@@ -102,7 +107,7 @@ public class AuthService implements UserDetailsService {
         }
 
         else if (role.equals(Role.EMPLOYEE)) {
-            Employee emp = (Employee) getUserObject(username);
+            Employee emp = getEmployee(username);
 
             claims.put("dept", emp.getDept());
             claims.put("designation", emp.getDesignation());
@@ -120,7 +125,7 @@ public class AuthService implements UserDetailsService {
                 .setSubject(empId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 5000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
     public Boolean validateToken(String token, UserDetails user) {
@@ -136,13 +141,21 @@ public class AuthService implements UserDetailsService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public Key getSignKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {

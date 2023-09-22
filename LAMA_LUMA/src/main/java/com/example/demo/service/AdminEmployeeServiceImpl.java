@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Employee;
@@ -21,6 +22,9 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService {
 
 	@Autowired
 	private TransactionRepository trxRepo;
+
+	@Autowired
+	private PasswordEncoder encoder;
 
 	@Override
 	public ResponseEntity<String> deleteEmployee(String id) {
@@ -59,6 +63,7 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService {
 		return temp;
 	}
 
+	// encode password for auth purposes
 	@Override
 	public Employee addEmployee(Employee emp) {
 		boolean ifExists = empRepo.existsById(emp.getEmployeeId());
@@ -66,6 +71,7 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService {
 			Employee tempEmp = empRepo.getReferenceById(emp.getEmployeeId());
 			return tempEmp;
 		} else {
+			emp.setPassword(encoder.encode(emp.getPassword()));
 			return empRepo.save(emp);
 		}
 	}

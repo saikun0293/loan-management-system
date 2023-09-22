@@ -7,4 +7,6 @@ public interface AdminLoginService {
 	public String login(Admin admin);
 
 	public boolean checkIfAdminExists(String adminId);
+
+	public Admin addAdmin(Admin admin);
 }
