@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
@@ -36,6 +39,10 @@ public class Transactions {
 	@Column
 	//@NotBlank
 	private Date issueDate;
+
+	@OneToMany
+	@JoinColumn(name = "transaction_Id", referencedColumnName = "Item_id")
+	private List<Item>item;
 	
 	public String getTransactionId() {
 		return transactionId;
