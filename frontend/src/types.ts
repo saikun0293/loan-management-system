@@ -1,17 +1,21 @@
-import { AxiosRequestConfig } from "axios"
-
-export type Role = "user" | "admin" | "anonymous"
-
 export interface Credentials {
   username: string
   password: string
 }
 
+//
+export interface AuthPayload {
+  name: string
+  empId: string
+  role: "ADMIN" | "EMPLOYEE" | "ANONYMOUS"
+  dept?: string
+  designation?: string
+}
+
 export interface GlobalAuthState {
   authToken: string
-  role: Role
   isLoggedIn: boolean
-  config: AxiosRequestConfig
+  user: AuthPayload
 }
 
 export interface User {

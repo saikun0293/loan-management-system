@@ -2,14 +2,18 @@ import axios, { isAxiosError } from "axios"
 import { notifications } from "@mantine/notifications"
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://localhost:8080"
 })
+
+/*
+ * Note: Any request other than login token would be present
+ * The token is always valid as user is logged in dynamically based on approp. role
+ */
 
 api.interceptors.request.use(
   (config) => {
     const isLoginRequest = config.url?.includes("login")
     if (!isLoginRequest) {
-      // logged in with proper token if not login request
       const token = localStorage.getItem("authToken")
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -27,7 +31,7 @@ api.interceptors.response.use(
         message: error.response
           ? error.response.data.message
           : "There seems to be an unknown issue. Contact administrator",
-        color: "red",
+        color: "red"
       })
     }
     return Promise.reject(error)

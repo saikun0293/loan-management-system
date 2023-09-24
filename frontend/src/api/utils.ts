@@ -1,19 +1,38 @@
-import { Role } from "../types"
+import jwtDecode, { JwtPayload } from "jwt-decode"
+import { AuthPayload } from "../types"
 
 // LOGIN UTILS
-export const decodeToken = (token: string) =>
-  JSON.parse(atob(token.split(".")[1]))
+type Token = AuthPayload & JwtPayload
+
+// decode token to jwt object
+const decodeToken = (token: string) => jwtDecode<Token>(token)
 
 export const isTokenExpired = (token: string) => {
-  const exp = decodeToken(token).exp
-  // getTime() returns value in ms
-  const present = Math.floor(new Date().getTime() / 1000)
-  return present >= exp
+  try {
+    const decodedToken = decodeToken(token)
+    const tokenExpiry = decodedToken.exp
+    if (!tokenExpiry)
+      throw new Error("The user authenticated token does not have an expiry")
+
+    const currTime = Math.floor(Date.now() / 1000) // to seconds
+    return tokenExpiry < currTime
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-export const isCurrentRole = (token: string, role: Role) => {
-  const roleFromToken = decodeToken(token).role
-  return role === roleFromToken
+export const extractClaims = (token: string) => {
+  const { empId, name, role, dept, designation } = decodeToken(token)
+  const payload: AuthPayload = {
+    empId,
+    name,
+    role
+  }
+  if (role === "EMPLOYEE") {
+    payload.dept = dept
+    payload.designation = designation
+  }
+  return payload
 }
 
 // FORM UTILS
