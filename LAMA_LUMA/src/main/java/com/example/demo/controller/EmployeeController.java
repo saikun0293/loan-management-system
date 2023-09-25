@@ -39,23 +39,23 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService empService;
 
-	@GetMapping("/items/purchased") // need to be checked and tested again
+	@GetMapping("/getAllAppliedItems") // need to be checked and tested again
 	public List<Map<String, Object>> getAllAppliedItems(@RequestParam(name = "empId") String empId) {
 		return empService.getAllAppliedItems(empId);
 	}
 
-	@PostMapping("/loan/apply")
+	@PostMapping("/applyForLoan")
 	public ResponseEntity<String> applyForLoan(@RequestParam(name = "empId") String empId,
 			@RequestParam(name = "itemId") String itemId) {
 		return empService.applyForLoan(empId, itemId);
 	}
 
-	@GetMapping("/items/all")
+	@GetMapping("/getAllAvailableItems")
 	public List<Item> getAllAvailableItems() {
 		return empService.getAllAvailableItems();
 	}
 
-	@GetMapping("/employee/getAllAppliedLoans") // need to be checked and tested again
+	@GetMapping("/getAllAppliedLoans") // need to be checked and tested again
 	public Set<LoanCards> getAllAppliedLoans(@RequestParam(name = "empId") String empId) {
 		return empService.getAllAppliedLoans(empId);
 	}
