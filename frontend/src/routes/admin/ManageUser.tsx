@@ -5,7 +5,7 @@ import {
   Modal,
   Table,
   Tabs,
-  Text,
+  Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
@@ -136,7 +136,7 @@ const ManageUser: React.FC = () => {
   ))
 
   return (
-    <Tabs defaultValue={"createUser"}>
+    <Tabs defaultValue={"createUser"} my={15}>
       <Tabs.List>
         <Tabs.Tab value="createUser">Create User Data</Tabs.Tab>
         <Tabs.Tab value="manageUsers">Manage Users</Tabs.Tab>
@@ -150,15 +150,18 @@ const ManageUser: React.FC = () => {
         />
       </Tabs.Panel>
       <Tabs.Panel value="manageUsers">
-        <Container>
+        <Container fluid>
           <Flex justify="space-between" align="center">
-            <Text component="h2">Employees Registered</Text>
+            <Title order={2} color="blue" my={20}>
+              Employees Registered
+            </Title>
             <Button variant="light" onClick={fetchAllUsers}>
               Refresh
             </Button>
           </Flex>
           <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
             <UserForm
+              type="Edit"
               designations={designations}
               departments={departments}
               onSubmit={updateUser}

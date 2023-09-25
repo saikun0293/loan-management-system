@@ -4,8 +4,8 @@ import {
   NumberInput,
   Select,
   Stack,
-  Text,
   TextInput,
+  Title,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { loanFormSchema } from "../api/schema"
@@ -15,6 +15,7 @@ import { Loan } from "../types"
 interface LoanFormProps {
   loanTypes: string[]
   initialLoanState: Loan
+  type?: "Create" | "Edit"
   onSubmit: (loan: Loan) => void
 }
 
@@ -22,6 +23,7 @@ const LoanForm: React.FC<LoanFormProps> = ({
   loanTypes,
   initialLoanState,
   onSubmit,
+  type = "Create",
 }) => {
   const form = useForm<Loan>({
     initialValues: initialLoanState,
@@ -30,9 +32,13 @@ const LoanForm: React.FC<LoanFormProps> = ({
     validateInputOnChange: true,
   })
 
+  const isCreate = !initialLoanState.loanId
+
   return (
     <Container>
-      <Text component="h2">Create Loan</Text>
+      <Title order={2} color="blue" my={20}>
+        {type} Loan
+      </Title>
       <form
         onSubmit={form.onSubmit((loan) => {
           onSubmit(loan)

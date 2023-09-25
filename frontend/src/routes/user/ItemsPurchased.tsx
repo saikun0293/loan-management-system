@@ -1,6 +1,7 @@
-import { Container, Grid, Table, Text } from "@mantine/core"
+import { Flex, Paper, Stack, Table, Text, Title } from "@mantine/core"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
+import { useAuth } from "../../context/AuthProvider"
 import { Item } from "../../types"
 
 interface PurchaseItem extends Item {
@@ -9,13 +10,15 @@ interface PurchaseItem extends Item {
 
 const ItemsPurchased = () => {
   const [itemsPurchased, setItemsPurchased] = useState<PurchaseItem[]>([])
-  const empId = "k310764"
+  const {
+    auth: { user },
+  } = useAuth()
 
   useEffect(() => {
     const fetchAllCardsAvailed = async () => {
       try {
         const res = await api.get<PurchaseItem[]>(
-          `/employee/getAllAppliedItems?empId=${empId}`
+          `/employee/getAllAppliedItems?empId=${user.empId}`
         )
         setItemsPurchased(res.data)
       } catch (e) {
@@ -36,14 +39,29 @@ const ItemsPurchased = () => {
     </tr>
   ))
 
+  const userData: { [key: string]: string } = {
+    "Employee Id": user.empId,
+    Designation: user.designation ?? "",
+    Department: user.dept ?? "",
+  }
+
   return (
-    <Container>
-      <Text align="center">Items Purchased</Text>
-      <Grid>
-        <Grid.Col span={4}>Employee Id: E10001</Grid.Col>
-        <Grid.Col span={4}>Designation: Manager</Grid.Col>
-        <Grid.Col span={4}>Department: Marketing</Grid.Col>
-      </Grid>
+    <Stack>
+      <Title align="center" order={1} color="blue" my={20}>
+        Items Purchased
+      </Title>
+      <Flex justify="space-around" gap={20}>
+        {Object.keys(userData).map((data, index) => (
+          <Paper key={index} withBorder py={10} px={30}>
+            <Text component="p" color="dimmed" size="xs">
+              {data}
+            </Text>
+            <Title order={3} color="blue">
+              {userData[data]}
+            </Title>
+          </Paper>
+        ))}
+      </Flex>
       <Table horizontalSpacing={"md"}>
         <thead>
           <tr>
@@ -57,7 +75,7 @@ const ItemsPurchased = () => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </Container>
+    </Stack>
   )
 }
 

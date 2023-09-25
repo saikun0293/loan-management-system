@@ -1,4 +1,4 @@
-import { Button, Container, Group, Text } from "@mantine/core"
+import { Button, Container, Flex, Title } from "@mantine/core"
 import { FC } from "react"
 import { Link } from "react-router-dom"
 
@@ -16,24 +16,18 @@ interface DashboardProps {
 const Dashboard: FC<DashboardProps> = ({ name, navLinks }) => {
   return (
     <Container>
-      <Text
-        component="h1"
-        size={40}
-        variant="gradient"
-        align="center"
-        gradient={{ from: "blue", to: "purple" }}
-      >
+      <Title order={1} color="blue" align="center" my={40}>
         {name}
-      </Text>
-      <Group spacing={"lg"}>
+      </Title>
+      <Flex justify={"space-around"}>
         {navLinks.map(({ displayName, name, to }, index) => (
           <Link to={to}>
-            <Button key={index} id={name}>
+            <Button key={index} id={name} fw={400}>
               {displayName}
             </Button>
           </Link>
         ))}
-      </Group>
+      </Flex>
     </Container>
   )
 }

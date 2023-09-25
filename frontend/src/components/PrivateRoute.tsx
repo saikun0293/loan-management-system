@@ -1,18 +1,20 @@
 import { Navigate } from "react-router-dom"
 import { useAuth } from "../context/AuthProvider"
-import { Role } from "../types"
 
 interface PrivateRouteProps {
   component: React.ComponentType
-  roles: Array<Role>
+  roles: Array<"ADMIN" | "EMPLOYEE" | "ANONYMOUS">
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
-  roles
+  roles,
 }) => {
   const {
-    auth: { isLoggedIn, role }
+    auth: {
+      isLoggedIn,
+      user: { role },
+    },
   } = useAuth()
 
   if (isLoggedIn && roles.includes(role)) return <Component />

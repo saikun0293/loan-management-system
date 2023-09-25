@@ -1,4 +1,3 @@
-import React from "react"
 import ReactDOM from "react-dom/client"
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
 import App from "./App"
@@ -16,27 +15,27 @@ import ManageUser from "./routes/admin/ManageUser"
 import Dashboard, { NavLink } from "./routes/Dashboard"
 import Home from "./routes/Home"
 import Login from "./routes/Login"
-import LoansApply from "./routes/user/LoansApply"
-import LoanCardsAvailed from "./routes/user/LoanCardsAvailed"
 import ItemsPurchased from "./routes/user/ItemsPurchased"
+import LoanCardsAvailed from "./routes/user/LoanCardsAvailed"
+import LoansApply from "./routes/user/LoansApply"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
-const userLinks: NavLink[] = [
+const employeeLinks: NavLink[] = [
   {
     displayName: "View Loans",
     name: "viewLoans",
-    to: "/user/loans/view",
+    to: "/employee/loans/view",
   },
   {
     displayName: "Apply for a loan",
     name: "applyLoans",
-    to: "/user/loans/apply",
+    to: "/employee/loans/apply",
   },
   {
     displayName: "Items Purchased",
     name: "itemsPurchased",
-    to: "/user/items",
+    to: "/employee/items",
   },
 ]
 
@@ -68,16 +67,20 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "login/:role",
+        path: "login",
         element: <Login />,
       },
       {
-        path: "user",
-        element: <PrivateRoute component={() => <Outlet />} roles={["user"]} />,
+        path: "employee",
+        element: (
+          <PrivateRoute component={() => <Outlet />} roles={["EMPLOYEE"]} />
+        ),
         children: [
           {
             index: true,
-            element: <Dashboard name="User Dashboard" navLinks={userLinks} />,
+            element: (
+              <Dashboard name="User Dashboard" navLinks={employeeLinks} />
+            ),
           },
           {
             path: "loans/view",
@@ -96,7 +99,7 @@ const router = createBrowserRouter([
       {
         path: "admin",
         element: (
-          <PrivateRoute component={() => <Outlet />} roles={["admin"]} />
+          <PrivateRoute component={() => <Outlet />} roles={["ADMIN"]} />
         ),
         children: [
           {
@@ -122,11 +125,7 @@ const router = createBrowserRouter([
   },
 ])
 
-root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-)
+root.render(<RouterProvider router={router} />)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

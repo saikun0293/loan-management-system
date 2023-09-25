@@ -5,8 +5,8 @@ import {
   NumberInput,
   Select,
   Switch,
-  Text,
   TextInput,
+  Title,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { itemFormSchema } from "../api/schema"
@@ -17,6 +17,7 @@ interface ItemFormProps {
   itemCategories: string[]
   itemMakes: string[]
   initialItemState: Item
+  type?: "Create" | "Edit"
   onSubmit: (item: Item) => void
 }
 
@@ -25,6 +26,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
   itemMakes,
   initialItemState,
   onSubmit,
+  type = "Create",
 }) => {
   const form = useForm<Item>({
     initialValues: initialItemState,
@@ -33,9 +35,13 @@ const ItemForm: React.FC<ItemFormProps> = ({
     validateInputOnChange: true,
   })
 
+  const isCreate = !initialItemState.itemId
+
   return (
     <Container>
-      <Text component="h2">Create Item</Text>
+      <Title order={2} color="blue" my={20}>
+        {type} Item
+      </Title>
       <form
         onSubmit={form.onSubmit((item) => {
           onSubmit(item)

@@ -1,58 +1,25 @@
-import {
-  Button,
-  Center,
-  Container,
-  Flex,
-  MantineProvider,
-  Navbar,
-  Text
-} from "@mantine/core"
-import { Link, Outlet } from "react-router-dom"
+import { MantineProvider } from "@mantine/core"
 import { Notifications } from "@mantine/notifications"
-import AuthProvider, { useAuth } from "./context/AuthProvider"
+import { Outlet } from "react-router-dom"
+import Navbar from "./components/Navbar"
+import AuthProvider from "./context/AuthProvider"
 
 const App = () => {
-  const {
-    auth: { isLoggedIn, user },
-    onLogout
-  } = useAuth()
-
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <AuthProvider>
+    <AuthProvider>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          fontFamily: "Martian Mono",
+          headings: { fontFamily: "DM Sans" },
+        }}
+      >
         <Notifications position="top-right" autoClose={8000} />
-        <Flex>
-          <Text
-            component="h2"
-            variant="gradient"
-            gradient={{ from: "blue", to: "purple" }}
-            fz={45}
-            fw={700}
-            align="center"
-          >
-            Loan Management System
-          </Text>
-          <Center>
-            {isLoggedIn ? (
-              <>
-                <Text size="sm">Logged in as {user.name}</Text>
-                <Button onClick={onLogout}>Logout</Button>
-              </>
-            ) : (
-              <Link to="/login">
-                <Button>Login</Button>
-              </Link>
-            )}
-          </Center>
-          :
-        </Flex>
-        <Center>
-          <Container>
-            <Outlet />
-          </Container>
-        </Center>
-      </AuthProvider>
-    </MantineProvider>
+        <Navbar />
+        <Outlet />
+      </MantineProvider>
+    </AuthProvider>
   )
 }
 

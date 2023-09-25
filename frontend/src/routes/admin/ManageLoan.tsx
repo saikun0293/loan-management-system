@@ -5,7 +5,7 @@ import {
   Modal,
   Table,
   Tabs,
-  Text,
+  Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
@@ -118,7 +118,7 @@ const ManageLoan: React.FC = () => {
   ))
 
   return (
-    <Tabs defaultValue={"createLoan"}>
+    <Tabs defaultValue={"createLoan"} my={15}>
       <Tabs.List>
         <Tabs.Tab value="createLoan">Create Loan Data</Tabs.Tab>
         <Tabs.Tab value="manageLoans">Manage Loans</Tabs.Tab>
@@ -131,15 +131,18 @@ const ManageLoan: React.FC = () => {
         />
       </Tabs.Panel>
       <Tabs.Panel value="manageLoans">
-        <Container>
+        <Container fluid>
           <Flex justify="space-between" align="center">
-            <Text component="h2">Available Loan Cards</Text>
+            <Title order={2} color="blue" my={20}>
+              Available Loan Cards
+            </Title>
             <Button variant="light" onClick={fetchAllLoans}>
               Refresh
             </Button>
           </Flex>
           <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
             <LoanForm
+              type="Edit"
               loanTypes={loanTypes}
               onSubmit={updateLoan}
               initialLoanState={editLoan}

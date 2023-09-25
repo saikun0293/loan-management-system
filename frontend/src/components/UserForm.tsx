@@ -1,4 +1,11 @@
-import { Button, Container, Grid, Select, Text, TextInput } from "@mantine/core"
+import {
+  Button,
+  Container,
+  Grid,
+  Select,
+  TextInput,
+  Title,
+} from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, yupResolver } from "@mantine/form"
 import { userFormSchema } from "../api/schema"
@@ -9,6 +16,7 @@ interface UserFormProps {
   designations: string[]
   departments: string[]
   initialUserState: User
+  type?: "Create" | "Edit"
   onSubmit: (user: User) => void
 }
 
@@ -17,6 +25,7 @@ const UserForm: React.FC<UserFormProps> = ({
   departments,
   initialUserState,
   onSubmit,
+  type = "Create",
 }) => {
   const form = useForm<User>({
     initialValues: initialUserState,
@@ -27,7 +36,9 @@ const UserForm: React.FC<UserFormProps> = ({
 
   return (
     <Container>
-      <Text component="h2">Create Customer</Text>
+      <Title order={2} color="blue" my={20}>
+        {type} Customer
+      </Title>
       <form
         onSubmit={form.onSubmit((user) => {
           onSubmit(user)

@@ -5,7 +5,7 @@ import {
   Modal,
   Table,
   Tabs,
-  Text,
+  Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
@@ -133,7 +133,7 @@ const ManageItem: React.FC = () => {
   ))
 
   return (
-    <Tabs defaultValue={"createitem"}>
+    <Tabs defaultValue={"createitem"} my={15}>
       <Tabs.List>
         <Tabs.Tab value="createitem">Create item Data</Tabs.Tab>
         <Tabs.Tab value="manageitems">Manage items</Tabs.Tab>
@@ -149,13 +149,16 @@ const ManageItem: React.FC = () => {
       <Tabs.Panel value="manageitems">
         <Container>
           <Flex justify="space-between" align="center">
-            <Text component="h2">Items Created</Text>
+            <Title order={2} color="blue" my={20}>
+              Items Registered
+            </Title>
             <Button variant="light" onClick={fetchAllItems}>
               Refresh
             </Button>
           </Flex>
           <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
             <ItemForm
+              type="Edit"
               itemCategories={categories}
               itemMakes={itemMakes}
               onSubmit={updateItem}

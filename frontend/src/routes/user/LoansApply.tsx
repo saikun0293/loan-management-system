@@ -4,14 +4,15 @@ import {
   Flex,
   Grid,
   Select,
-  Text,
   TextInput,
+  Title,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
 import { FC, useEffect, useState } from "react"
 import api from "../../api/axios"
 import { loanApplicationSchema } from "../../api/schema"
+import { useAuth } from "../../context/AuthProvider"
 import { Item } from "../../types"
 
 interface LoanApplication {
@@ -29,7 +30,7 @@ const initialItemState: Item = {
 }
 
 const initialLoanApplication: LoanApplication = {
-  employeeId: "k310764",
+  employeeId: "",
   itemId: "",
 }
 
@@ -46,12 +47,22 @@ const LoansApply: FC = () => {
   const [make, setMake] = useState("")
   const [selectedItem, setSelectedItem] = useState<Item>(initialItemState)
 
+  const {
+    auth: {
+      user: { empId },
+    },
+  } = useAuth()
+
   const form = useForm<LoanApplication>({
     initialValues: initialLoanApplication,
     validate: yupResolver(loanApplicationSchema),
     validateInputOnBlur: true,
     validateInputOnChange: true,
   })
+
+  useEffect(() => {
+    form.setFieldValue("employeeId", empId)
+  }, [form])
 
   useEffect(() => {
     //reset item
@@ -99,7 +110,9 @@ const LoansApply: FC = () => {
   return (
     <Container>
       <Flex justify="space-between" align="center">
-        <Text component="h2">Apply for Loan</Text>
+        <Title order={2} color="blue" my={20}>
+          Apply for Loan
+        </Title>
         <Button
           variant="light"
           onClick={() => {
@@ -185,10 +198,7 @@ const LoansApply: FC = () => {
           )}
         </Grid>
         <Button.Group my={20}>
-          <Button type="submit">Submit</Button>
-          <Button variant="light" type="button" onClick={form.reset}>
-            Reset
-          </Button>
+          <Button type="submit">Apply</Button>
         </Button.Group>
       </form>
     </Container>

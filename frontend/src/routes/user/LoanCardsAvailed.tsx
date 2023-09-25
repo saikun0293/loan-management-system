@@ -1,23 +1,31 @@
-import { Container, Grid, Table, Text } from "@mantine/core"
-import { Loan } from "../../types"
-import { useState, useEffect } from "react"
+import {
+  Container,
+  Flex,
+  Paper,
+  Stack,
+  Table,
+  Text,
+  Title,
+} from "@mantine/core"
+import { useEffect, useState } from "react"
 import api from "../../api/axios"
-
-interface CardAvailed extends Loan {
-  issueDate: Date
-}
+import { useAuth } from "../../context/AuthProvider"
+import { Loan } from "../../types"
 
 const LoanCardsAvailed = () => {
-  const [cardsAvailed, setCardsAvailed] = useState<CardAvailed[]>([])
+  const {
+    auth: { user },
+  } = useAuth()
+  const [cardsAvailed, setCardsAvailed] = useState<Loan[]>([])
   const empId = "k310764"
 
   useEffect(() => {
     const fetchAllCardsAvailed = async () => {
       try {
-        const res = await api.post<CardAvailed[]>(
+        const res = await api.get<Loan[]>(
           `/employee/getAllAppliedLoans?empId=${empId}`
         )
-        setCardsAvailed(res.data)
+        setCardsAvailed(res.data.filter((d) => d != null))
       } catch (e) {
         console.log("Error while fetching loans", e)
       }
@@ -30,30 +38,45 @@ const LoanCardsAvailed = () => {
       <td>{card.loanId}</td>
       <td>{card.loanType}</td>
       <td>{card.duration}</td>
-      <td>{card.issueDate.toLocaleDateString("en-US")}</td>
     </tr>
   ))
 
+  const userData: { [key: string]: string } = {
+    "Employee Id": user.empId,
+    Designation: user.designation ?? "",
+    Department: user.dept ?? "",
+  }
+
   return (
-    <Container>
-      <Text align="center">Loan Cards Availed</Text>
-      <Grid>
-        <Grid.Col span={4}>Employee Id: E10001</Grid.Col>
-        <Grid.Col span={4}>Designation: Manager</Grid.Col>
-        <Grid.Col span={4}>Department: Marketing</Grid.Col>
-      </Grid>
-      <Table horizontalSpacing={"md"}>
-        <thead>
-          <tr>
-            <th>Loan Id</th>
-            <th>Loan Type</th>
-            <th>Duration</th>
-            <th>Card Issue Date</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-    </Container>
+    <Stack>
+      <Title align="center" order={1} color="blue" my={20}>
+        Loan Cards Availed
+      </Title>
+      <Flex justify="space-around" gap={20}>
+        {Object.keys(userData).map((data, index) => (
+          <Paper key={index} withBorder py={10} px={30}>
+            <Text component="p" color="dimmed" size="xs">
+              {data}
+            </Text>
+            <Title order={3} color="blue">
+              {userData[data]}
+            </Title>
+          </Paper>
+        ))}
+      </Flex>
+      <Container>
+        <Table horizontalSpacing={"xl"} mt={30}>
+          <thead>
+            <tr>
+              <th>Loan Id</th>
+              <th>Loan Type</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </Table>
+      </Container>
+    </Stack>
   )
 }
 

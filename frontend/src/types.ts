@@ -3,7 +3,6 @@ export interface Credentials {
   password: string
 }
 
-//
 export interface AuthPayload {
   name: string
   empId: string
