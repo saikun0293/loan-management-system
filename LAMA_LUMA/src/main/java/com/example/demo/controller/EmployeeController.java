@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Item;
+import com.example.demo.entity.LoanCards;
 import com.example.demo.repository.ItemRepository;
 import com.example.demo.repository.LoanCardRepository;
 import com.example.demo.repository.TransactionRepository;
@@ -53,4 +55,8 @@ public class EmployeeController {
 		return empService.getAllAvailableItems();
 	}
 
+	@GetMapping("/employee/getAllAppliedLoans") // need to be checked and tested again
+	public Set<LoanCards> getAllAppliedLoans(@RequestParam(name = "empId") String empId) {
+		return empService.getAllAppliedLoans(empId);
+	}
 }
