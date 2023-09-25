@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Item;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, String>{
+public interface ItemRepository extends JpaRepository<Item, String> {
 	List<Item> findByissueStatus(boolean c);
 
 }

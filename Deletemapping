@@ -1,0 +1,14 @@
+ @DeleteMapping("/deleteEmployee/{id}")	
+	public ResponseEntity<String> deleteEmployee(@RequestBody Employee employee, @PathVariable("id") String id) { {
+      boolean ifExists=empRepo.existsById(employee.getEmployeeId());
+	  id = employee.getEmployeeId(); 
+	  if(!ifExists) {
+			return new ResponseEntity<>("No such Employee",HttpStatus.BAD_REQUEST);
+		}
+		else{
+			empRepo.deleteById(id);
+			return new ResponseEntity<>("Successfully deleted employee",HttpStatus.OK);
+		}
+
+   }
+}
