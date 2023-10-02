@@ -7,12 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @Entity
 public class Item {
-	
+
 	@Id
-	@Column(unique=true)
+	@Column(unique = true)
 	@NotBlank
 	private String itemId;
 	@Column
@@ -28,84 +28,65 @@ public class Item {
 	@Column
 	private String loanId;
 
-	
 	public Item() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public String getItemId() {
 		return itemId;
 	}
-
 
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public boolean getIssueStatus() {
 		return issueStatus;
 	}
-
 
 	public void setIssueStatus(boolean issueStatus) {
 		this.issueStatus = issueStatus;
 	}
 
-
 	public String getMake() {
 		return make;
 	}
-
 
 	public void setMake(String make) {
 		this.make = make;
 	}
 
-
 	public String getCategory() {
 		return category;
 	}
-
 
 	public void setCategory(String category) {
 		this.category = category;
 	}
 
-
 	public int getValue() {
 		return value;
 	}
-
 
 	public void setValue(int value) {
 		this.value = value;
 	}
 
-
 	public String getLoanId() {
 		return loanId;
 	}
 
-
 	public void setLoanId(String loanId) {
 		this.loanId = loanId;
 	}
-
-	
-
-	
 
 }
