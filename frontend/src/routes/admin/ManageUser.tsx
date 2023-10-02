@@ -159,7 +159,11 @@ const ManageUser: React.FC = () => {
               Refresh
             </Button>
           </Flex>
-          <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
+          <Modal
+            size="xl"
+            opened={modalOpen}
+            onClose={() => setModalOpen(false)}
+          >
             <UserForm
               type="Edit"
               designations={designations}

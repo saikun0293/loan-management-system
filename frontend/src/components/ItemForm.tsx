@@ -6,7 +6,7 @@ import {
   Select,
   Switch,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { useEffect, useState } from "react"
@@ -24,7 +24,7 @@ interface ItemFormProps {
 const ItemForm: React.FC<ItemFormProps> = ({
   initialItemState,
   onSubmit,
-  type = "Create"
+  type = "Create",
 }) => {
   const [categories, setCategories] = useState<string[]>([])
   const [filteredMakes, setFitleredMakes] = useState<string[]>([])
@@ -33,7 +33,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
     initialValues: initialItemState,
     validate: yupResolver(itemFormSchema),
     validateInputOnBlur: true,
-    validateInputOnChange: true
+    validateInputOnChange: true,
   })
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
 
   useEffect(() => {
     form.setFieldValue("make", "")
-    const makeData = availableItems[form.values.category]
+    const makeData = availableItems[form.values.category] ?? []
     setFitleredMakes(makeData)
   }, [form.values.category])
 
@@ -57,7 +57,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
           onSubmit(item)
           form.setValues({
             ...initialItemState,
-            itemId: generateId("I", 7)
+            itemId: generateId("I", 7),
           })
         })}
       >
@@ -75,7 +75,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
               label="Item Category"
               data={categories.map((d) => ({
                 label: d,
-                value: d
+                value: d,
               }))}
               withAsterisk
               {...form.getInputProps("category")}
@@ -86,7 +86,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
               label="Item Make"
               data={filteredMakes.map((d) => ({
                 label: d,
-                value: d
+                value: d,
               }))}
               disabled={!form.values.category}
               withAsterisk

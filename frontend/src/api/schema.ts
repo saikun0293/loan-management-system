@@ -18,7 +18,7 @@ export const itemFormSchema = Yup.object({
   name: Yup.string().required("Item description cannot be be empty"),
   value: Yup.number().min(1, "Item can't be for free"),
   issueStatus: Yup.boolean(),
-  make: Yup.string().required("Item make cannot be empty"),
+  make: Yup.string(),
 })
 
 export const userFormSchema = Yup.object({
@@ -44,5 +44,5 @@ export const userFormSchema = Yup.object({
 
 export const loanApplicationSchema = Yup.object({
   employeeId: Yup.string().required("Employee Id cannot be empty"),
-  itemId: Yup.string().required("Please select an item from the list"),
+  itemId: Yup.string(),
 })

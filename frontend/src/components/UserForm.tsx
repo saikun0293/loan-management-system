@@ -113,13 +113,15 @@ const UserForm: React.FC<UserFormProps> = ({
               {...form.getInputProps("gender")}
             />
           </Grid.Col>
-          <Grid.Col span={6}>
-            <TextInput
-              withAsterisk
-              label="Password"
-              {...form.getInputProps("password")}
-            />
-          </Grid.Col>
+          {type === "Create" && (
+            <Grid.Col span={6}>
+              <TextInput
+                withAsterisk
+                label="Password"
+                {...form.getInputProps("password")}
+              />
+            </Grid.Col>
+          )}
         </Grid>
         <Button.Group my={20}>
           <Button type="submit">Submit</Button>
