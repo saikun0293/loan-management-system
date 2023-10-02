@@ -5,7 +5,7 @@ import {
   Grid,
   Select,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
@@ -26,12 +26,12 @@ const initialItemState: Item = {
   category: "",
   make: "",
   issueStatus: false,
-  value: 0,
+  value: 0
 }
 
 const initialLoanApplication: LoanApplication = {
   employeeId: "",
-  itemId: "",
+  itemId: ""
 }
 
 const LoansApply: FC = () => {
@@ -49,27 +49,38 @@ const LoansApply: FC = () => {
 
   const {
     auth: {
-      user: { empId },
-    },
+      user: { empId }
+    }
   } = useAuth()
 
   const form = useForm<LoanApplication>({
     initialValues: initialLoanApplication,
     validate: yupResolver(loanApplicationSchema),
     validateInputOnBlur: true,
-    validateInputOnChange: true,
+    validateInputOnChange: true
   })
 
+  // set empId from global context
   useEffect(() => {
     form.setFieldValue("employeeId", empId)
   }, [form])
 
+  // if category changes
   useEffect(() => {
-    //reset item
     form.setFieldValue("itemId", "")
+    setMake("")
+  }, [category])
+
+  // if make changes
+  useEffect(() => {
+    form.setFieldValue("itemId", "")
+  }, [make])
+
+  // change items to display if category or make changes
+  useEffect(() => {
     const filteredItems = items
       .filter((item) => !item.category || item.category === category)
-      .filter((item) => item.make === make)
+      .filter((item) => !item.make || item.make === make)
     setShowItems(filteredItems)
   }, [items, category, make])
 
@@ -78,11 +89,16 @@ const LoansApply: FC = () => {
       try {
         const res = await api.get<Item[]>("/employee/getAllAvailableItems")
         const items = res.data
+
+        // find all possible categories in fetched items
         setItems(items)
         const uniqueCategories = Array.from(
           new Set(items.map((item) => item.category))
         )
+
+        // find all possible makes/brands of items fetched
         const uniqueMakes = Array.from(new Set(items.map((item) => item.make)))
+
         setCategories(uniqueCategories)
         setMakes(uniqueMakes)
       } catch (e) {
@@ -100,7 +116,7 @@ const LoansApply: FC = () => {
       )
       notifications.show({
         title: `Transaction successful`,
-        message: "Loan has been applied for item successfully",
+        message: "Loan has been applied for item successfully"
       })
     } catch (e) {
       console.log("Error while applying for loan", e)
@@ -118,6 +134,7 @@ const LoansApply: FC = () => {
           onClick={() => {
             setCategory("")
             setMake("")
+            setSelectedItem(initialItemState)
           }}
         >
           Refresh
@@ -147,7 +164,7 @@ const LoansApply: FC = () => {
               label="Item Category"
               data={categories.map((d) => ({
                 label: d,
-                value: d,
+                value: d
               }))}
               value={category}
               onChange={(value) => setCategory(value ? value : "")}
@@ -159,7 +176,7 @@ const LoansApply: FC = () => {
               label="Item Make"
               data={makes.map((d) => ({
                 label: d,
-                value: d,
+                value: d
               }))}
               value={make}
               onChange={(value) => setMake(value ? value : "")}
@@ -174,15 +191,17 @@ const LoansApply: FC = () => {
               data={showItems.map((d) => ({
                 label: d.name,
                 value: d.itemId,
-                description: `Price: ${d.value}`,
+                description: `Price: ${d.value}`
               }))}
               withAsterisk
               onChange={(value) => {
                 form.setFieldValue("itemId", value!)
                 const chosenItem = showItems.filter(
                   (item) => item.itemId === value
-                )
-                if (chosenItem.length > 0) setSelectedItem(chosenItem[0])
+                )[0]
+                setCategory(chosenItem.category)
+                setMake(chosenItem.make)
+                setSelectedItem(chosenItem)
               }}
             />
           </Grid.Col>
