@@ -5,11 +5,12 @@ import {
   Modal,
   Table,
   Tabs,
-  Title,
+  Title
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
+import { availableItems } from "../../api/db"
 import { generateId } from "../../api/utils"
 import LoanForm from "../../components/LoanForm"
 import { Loan } from "../../types"
@@ -17,14 +18,14 @@ import { Loan } from "../../types"
 const initialLoanState: Loan = {
   loanId: generateId("L", 7),
   loanType: "",
-  duration: 1,
+  duration: 1
 }
 
 const ManageLoan: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [loanTypes, setLoanTypes] = useState<string[]>([])
   const [loans, setLoans] = useState<Loan[]>([])
-  const [editLoan, setEditLoan] = useState(initialLoanState)
+  const [editLoan, setEditLoan] = useState<Loan>(initialLoanState)
 
   const fetchAllLoans = async () => {
     try {
@@ -38,11 +39,12 @@ const ManageLoan: React.FC = () => {
   useEffect(() => {
     const fetchInputData = async () => {
       try {
-        // const resDes = await api.get("/getAllLoanTypes")
+        // get all loans initially to populate table
         await fetchAllLoans()
 
-        // TODO: Change later
-        setLoanTypes(["Furniture", "Crockery", "Stationary", "Housing", "Agro"])
+        // Categories are loan types
+        const loanTypes = Object.keys(availableItems)
+        setLoanTypes(loanTypes)
       } catch (e) {
         console.log("Error while fetching data for managing loans", e)
       }
@@ -55,7 +57,7 @@ const ManageLoan: React.FC = () => {
       const res = await api.post("/createLoanCard", loan)
       notifications.show({
         title: `${res.statusText}`,
-        message: "Loan card has been created successfully",
+        message: "Loan card has been created successfully"
       })
       fetchAllLoans()
     } catch (e) {
@@ -68,7 +70,7 @@ const ManageLoan: React.FC = () => {
       const res = await api.post("/updateLoanCard", loan)
       notifications.show({
         title: `${res.statusText}`,
-        message: "Loan card has been updated successfully",
+        message: "Loan card has been updated successfully"
       })
       setModalOpen(false)
       fetchAllLoans()
@@ -82,7 +84,7 @@ const ManageLoan: React.FC = () => {
       const res = await api.delete(`/deleteLoanCard/${loanId}`)
       notifications.show({
         title: `${res.statusText}`,
-        message: res.data,
+        message: res.data
       })
       fetchAllLoans()
     } catch (e) {
@@ -153,7 +155,7 @@ const ManageLoan: React.FC = () => {
               <tr>
                 <th>Loan Id</th>
                 <th>Loan Type</th>
-                <th>Duration</th>
+                <th>Duration (in Years)</th>
                 <th>Actions</th>
               </tr>
             </thead>

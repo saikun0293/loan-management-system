@@ -11,6 +11,7 @@ import { useForm, yupResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
 import { FC, useEffect, useState } from "react"
 import api from "../../api/axios"
+import { availableItems } from "../../api/db"
 import { loanApplicationSchema } from "../../api/schema"
 import { useAuth } from "../../context/AuthProvider"
 import { Item } from "../../types"
@@ -60,16 +61,29 @@ const LoansApply: FC = () => {
     validateInputOnChange: true,
   })
 
+  // set empId from global context
   useEffect(() => {
     form.setFieldValue("employeeId", empId)
-  }, [form])
+  }, [empId])
 
+  // if category or make changes in both cases
   useEffect(() => {
-    //reset item
     form.setFieldValue("itemId", "")
+    setSelectedItem(initialItemState)
+  }, [category, make])
+
+  // if category changes
+  useEffect(() => {
+    setMake("")
+    const makeData = availableItems[category] ?? []
+    setMakes(makeData)
+  }, [category])
+
+  // change items to display if category or make changes
+  useEffect(() => {
     const filteredItems = items
       .filter((item) => !item.category || item.category === category)
-      .filter((item) => item.make === make)
+      .filter((item) => !item.make || item.make === make)
     setShowItems(filteredItems)
   }, [items, category, make])
 
@@ -77,18 +91,14 @@ const LoansApply: FC = () => {
     const fetchAllItems = async () => {
       try {
         const res = await api.get<Item[]>("/employee/getAllAvailableItems")
-        const items = res.data
-        setItems(items)
-        const uniqueCategories = Array.from(
-          new Set(items.map((item) => item.category))
-        )
-        const uniqueMakes = Array.from(new Set(items.map((item) => item.make)))
-        setCategories(uniqueCategories)
-        setMakes(uniqueMakes)
+        setItems(res.data ?? [])
       } catch (e) {
         console.log("Error while fetching items", e)
       }
     }
+
+    const itemCategories = Object.keys(availableItems)
+    setCategories(itemCategories)
     fetchAllItems()
   }, [])
 
@@ -118,6 +128,7 @@ const LoansApply: FC = () => {
           onClick={() => {
             setCategory("")
             setMake("")
+            setSelectedItem(initialItemState)
           }}
         >
           Refresh
@@ -161,6 +172,7 @@ const LoansApply: FC = () => {
                 label: d,
                 value: d,
               }))}
+              disabled={!category}
               value={make}
               onChange={(value) => setMake(value ? value : "")}
               withAsterisk
@@ -170,6 +182,11 @@ const LoansApply: FC = () => {
             <Select
               {...form.getInputProps("itemId")}
               label="Select Item"
+              placeholder={
+                showItems.length > 0
+                  ? "Select an item from the list"
+                  : "No items found with given category"
+              }
               maxDropdownHeight={250}
               data={showItems.map((d) => ({
                 label: d.name,
@@ -181,8 +198,10 @@ const LoansApply: FC = () => {
                 form.setFieldValue("itemId", value!)
                 const chosenItem = showItems.filter(
                   (item) => item.itemId === value
-                )
-                if (chosenItem.length > 0) setSelectedItem(chosenItem[0])
+                )[0]
+                setCategory(chosenItem.category)
+                setMake(chosenItem.make)
+                setSelectedItem(chosenItem)
               }}
             />
           </Grid.Col>

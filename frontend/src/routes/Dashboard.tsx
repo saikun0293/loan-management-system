@@ -21,8 +21,8 @@ const Dashboard: FC<DashboardProps> = ({ name, navLinks }) => {
       </Title>
       <Flex justify={"space-around"}>
         {navLinks.map(({ displayName, name, to }, index) => (
-          <Link to={to}>
-            <Button key={index} id={name} fw={400}>
+          <Link key={index} to={to}>
+            <Button id={name} fw={400}>
               {displayName}
             </Button>
           </Link>

@@ -5,11 +5,12 @@ import {
   Modal,
   Table,
   Tabs,
-  Title,
+  Title
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
+import { availableItems } from "../../api/db"
 import { generateId } from "../../api/utils"
 import ItemForm from "../../components/ItemForm"
 import { Item } from "../../types"
@@ -20,13 +21,11 @@ const initialItemState: Item = {
   category: "",
   make: "",
   issueStatus: false,
-  value: 1,
+  value: 1
 }
 
 const ManageItem: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [categories, setCategories] = useState<string[]>([])
-  const [itemMakes, setItemMakes] = useState<string[]>([])
   const [items, setItems] = useState<Item[]>([])
   const [editItem, setEditItem] = useState(initialItemState)
 
@@ -39,27 +38,9 @@ const ManageItem: React.FC = () => {
     }
   }
 
+  // get all items initially
   useEffect(() => {
-    const fetchInputData = async () => {
-      try {
-        // const resDes = await api.get("/getDesignations")
-        // const resDepts = await api.get("/getDepartments")
-        await fetchAllItems()
-
-        // TODO: Change later
-        setCategories([
-          "Furniture",
-          "Crockery",
-          "Stationary",
-          "Housing",
-          "Agro",
-        ])
-        setItemMakes(["Wooden", "Glass", "Metal"])
-      } catch (e) {
-        console.log("Error while fetching data for managing items", e)
-      }
-    }
-    fetchInputData()
+    fetchAllItems()
   }, [])
 
   const createItem = async (item: Item) => {
@@ -67,7 +48,7 @@ const ManageItem: React.FC = () => {
       const res = await api.post("/createItem", item)
       notifications.show({
         title: `${res.statusText}`,
-        message: res.data,
+        message: res.data
       })
       fetchAllItems()
     } catch (e) {
@@ -80,7 +61,7 @@ const ManageItem: React.FC = () => {
       const res = await api.post("/updateItem", item)
       notifications.show({
         title: `${res.statusText}`,
-        message: res.data,
+        message: res.data
       })
       setModalOpen(false)
       fetchAllItems()
@@ -94,7 +75,7 @@ const ManageItem: React.FC = () => {
       const res = await api.delete(`/deleteItem/${itemId}`)
       notifications.show({
         title: `${res.statusText}`,
-        message: res.data,
+        message: res.data
       })
       fetchAllItems()
     } catch (e) {
@@ -139,12 +120,7 @@ const ManageItem: React.FC = () => {
         <Tabs.Tab value="manageitems">Manage items</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panel value="createitem">
-        <ItemForm
-          itemCategories={categories}
-          itemMakes={itemMakes}
-          onSubmit={createItem}
-          initialItemState={initialItemState}
-        />
+        <ItemForm onSubmit={createItem} initialItemState={initialItemState} />
       </Tabs.Panel>
       <Tabs.Panel value="manageitems">
         <Container>
@@ -159,8 +135,6 @@ const ManageItem: React.FC = () => {
           <Modal opened={modalOpen} onClose={() => setModalOpen(false)}>
             <ItemForm
               type="Edit"
-              itemCategories={categories}
-              itemMakes={itemMakes}
               onSubmit={updateItem}
               initialItemState={editItem}
             />

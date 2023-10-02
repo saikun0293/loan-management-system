@@ -9,25 +9,26 @@ import {
   Title,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
+import { useEffect, useState } from "react"
+import { availableItems } from "../api/db"
 import { itemFormSchema } from "../api/schema"
 import { generateId } from "../api/utils"
 import { Item } from "../types"
 
 interface ItemFormProps {
-  itemCategories: string[]
-  itemMakes: string[]
   initialItemState: Item
   type?: "Create" | "Edit"
   onSubmit: (item: Item) => void
 }
 
 const ItemForm: React.FC<ItemFormProps> = ({
-  itemCategories,
-  itemMakes,
   initialItemState,
   onSubmit,
   type = "Create",
 }) => {
+  const [categories, setCategories] = useState<string[]>([])
+  const [filteredMakes, setFitleredMakes] = useState<string[]>([])
+
   const form = useForm<Item>({
     initialValues: initialItemState,
     validate: yupResolver(itemFormSchema),
@@ -35,7 +36,16 @@ const ItemForm: React.FC<ItemFormProps> = ({
     validateInputOnChange: true,
   })
 
-  const isCreate = !initialItemState.itemId
+  useEffect(() => {
+    const itemCategories = Object.keys(availableItems)
+    setCategories(itemCategories)
+  }, [])
+
+  useEffect(() => {
+    form.setFieldValue("make", "")
+    const makeData = availableItems[form.values.category] ?? []
+    setFitleredMakes(makeData)
+  }, [form.values.category])
 
   return (
     <Container>
@@ -63,12 +73,24 @@ const ItemForm: React.FC<ItemFormProps> = ({
           <Grid.Col span={6}>
             <Select
               label="Item Category"
-              data={itemCategories.map((d) => ({
+              data={categories.map((d) => ({
                 label: d,
                 value: d,
               }))}
               withAsterisk
               {...form.getInputProps("category")}
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Select
+              label="Item Make"
+              data={filteredMakes.map((d) => ({
+                label: d,
+                value: d,
+              }))}
+              disabled={!form.values.category}
+              withAsterisk
+              {...form.getInputProps("make")}
             />
           </Grid.Col>
           <Grid.Col span={6}>
@@ -90,17 +112,6 @@ const ItemForm: React.FC<ItemFormProps> = ({
               labelPosition="left"
               label="Issue Item?"
               {...form.getInputProps("issueStatus")}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Select
-              label="Item Make"
-              data={itemMakes.map((d) => ({
-                label: d,
-                value: d,
-              }))}
-              withAsterisk
-              {...form.getInputProps("make")}
             />
           </Grid.Col>
         </Grid>
