@@ -10,6 +10,7 @@ import {
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
+import { availableItems } from "../../api/db"
 import { generateId } from "../../api/utils"
 import LoanForm from "../../components/LoanForm"
 import { Loan } from "../../types"
@@ -38,11 +39,11 @@ const ManageLoan: React.FC = () => {
   useEffect(() => {
     const fetchInputData = async () => {
       try {
-        // const resDes = await api.get("/getAllLoanTypes")
         await fetchAllLoans()
 
-        // TODO: Change later
-        setLoanTypes(["Furniture", "Crockery", "Stationary", "Housing", "Agro"])
+        // Get loan types from local file
+        const loanTypes = Object.keys(availableItems)
+        setLoanTypes(loanTypes)
       } catch (e) {
         console.log("Error while fetching data for managing loans", e)
       }
@@ -153,7 +154,7 @@ const ManageLoan: React.FC = () => {
               <tr>
                 <th>Loan Id</th>
                 <th>Loan Type</th>
-                <th>Duration</th>
+                <th>Duration (in Years)</th>
                 <th>Actions</th>
               </tr>
             </thead>

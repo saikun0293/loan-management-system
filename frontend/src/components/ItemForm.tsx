@@ -9,6 +9,8 @@ import {
   Title,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
+import { useEffect, useState } from "react"
+import { availableItems } from "../api/db"
 import { itemFormSchema } from "../api/schema"
 import { generateId } from "../api/utils"
 import { Item } from "../types"
@@ -28,6 +30,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
   onSubmit,
   type = "Create",
 }) => {
+  const [makeData, setMakesData] = useState<string[]>([])
   const form = useForm<Item>({
     initialValues: initialItemState,
     validate: yupResolver(itemFormSchema),
@@ -35,7 +38,10 @@ const ItemForm: React.FC<ItemFormProps> = ({
     validateInputOnChange: true,
   })
 
-  const isCreate = !initialItemState.itemId
+  useEffect(() => {
+    form.setFieldValue("make", "")
+    const _makeData = form.values.category
+  }, [form.values.category])
 
   return (
     <Container>
@@ -95,10 +101,11 @@ const ItemForm: React.FC<ItemFormProps> = ({
           <Grid.Col span={6}>
             <Select
               label="Item Make"
-              data={itemMakes.map((d) => ({
+              data={availableItems[form.values.category].map((d) => ({
                 label: d,
                 value: d,
               }))}
+              disabled={!form.values.category}
               withAsterisk
               {...form.getInputProps("make")}
             />

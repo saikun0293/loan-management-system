@@ -54,10 +54,15 @@ const AuthProvider = (props: any) => {
   }
 
   useEffect(() => {
+    if (auth.isLoggedIn) return
+
     const currToken = localStorage.getItem("authToken")
 
-    // Ignore if no token or already logged in
-    if (auth.isLoggedIn || !currToken) return
+    if (!currToken) {
+      setAuth(initialAuthState)
+      navigate("/")
+    }
+
     // Remind user if session has expired and remove expired token
     else if (isTokenExpired(currToken)) {
       localStorage.removeItem("authToken")

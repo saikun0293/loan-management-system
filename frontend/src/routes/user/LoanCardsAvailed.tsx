@@ -17,13 +17,12 @@ const LoanCardsAvailed = () => {
     auth: { user },
   } = useAuth()
   const [cardsAvailed, setCardsAvailed] = useState<Loan[]>([])
-  const empId = "k310764"
 
   useEffect(() => {
     const fetchAllCardsAvailed = async () => {
       try {
         const res = await api.get<Loan[]>(
-          `/employee/getAllAppliedLoans?empId=${empId}`
+          `/employee/getAllAppliedLoans?empId=${user.empId}`
         )
         setCardsAvailed(res.data.filter((d) => d != null))
       } catch (e) {
@@ -70,7 +69,7 @@ const LoanCardsAvailed = () => {
             <tr>
               <th>Loan Id</th>
               <th>Loan Type</th>
-              <th>Duration</th>
+              <th>Duration (in Years)</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>

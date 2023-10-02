@@ -32,8 +32,6 @@ const LoanForm: React.FC<LoanFormProps> = ({
     validateInputOnChange: true,
   })
 
-  const isCreate = !initialLoanState.loanId
-
   return (
     <Container>
       <Title order={2} color="blue" my={20}>
@@ -68,7 +66,7 @@ const LoanForm: React.FC<LoanFormProps> = ({
           <NumberInput
             withAsterisk
             min={1}
-            label="Duration"
+            label="Duration (in Years)"
             {...form.getInputProps("duration")}
           />
         </Stack>

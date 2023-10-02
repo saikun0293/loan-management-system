@@ -10,6 +10,7 @@ import {
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
+import { availableItems } from "../../api/db"
 import { generateId } from "../../api/utils"
 import ItemForm from "../../components/ItemForm"
 import { Item } from "../../types"
@@ -39,22 +40,14 @@ const ManageItem: React.FC = () => {
     }
   }
 
+  useEffect(() => {}, [])
+
   useEffect(() => {
     const fetchInputData = async () => {
       try {
-        // const resDes = await api.get("/getDesignations")
-        // const resDepts = await api.get("/getDepartments")
         await fetchAllItems()
-
-        // TODO: Change later
-        setCategories([
-          "Furniture",
-          "Crockery",
-          "Stationary",
-          "Housing",
-          "Agro",
-        ])
-        setItemMakes(["Wooden", "Glass", "Metal"])
+        const ctgs = Object.keys(availableItems)
+        setCategories(ctgs)
       } catch (e) {
         console.log("Error while fetching data for managing items", e)
       }
